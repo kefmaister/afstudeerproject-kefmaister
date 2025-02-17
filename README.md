@@ -1,4 +1,3 @@
-````markdown
 # Internship Database Redesign Project
 
 A modern redesign of your school's internship database platform, connecting students, companies, and professors seamlessly.
@@ -58,11 +57,11 @@ This project aims to revamp the existing internship database system, making it e
 ### Steps
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/kefmaister/SmartDatabase-FinalProject.git
    cd SmartDatabase-FinalProject
    ```
-````
 
 2. **Install dependencies**
 
