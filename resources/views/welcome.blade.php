@@ -65,14 +65,25 @@
                         <h2 class="text-xl font-semibold mb-2">Hoofdwebsite</h2>
                         <p class="mb-6">
                             <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline">
-                                Artevelde hogeschool
+                                Arteveldehogeschool
+                            </a>
+                        </p>
+                        <p class="mb-6">
+                            <a href="https://programmeren.gent/" class="text-blue-600 hover:underline">
+                                Programmeren
+                            </a>
+                        </p>
+                        <p class="mb-6">
+                            <a href="https://www.orm.gent/" class="text-blue-600 hover:underline">
+                                Organisatie en Management
                             </a>
                         </p>
 
                         <!-- Opleidingen -->
                         <h2 class="text-xl font-semibold mb-2">Opleidingen</h2>
                         <p class="mb-6">
-                            <a href="https://www.arteveldehogeschool.be/nl/opleidingen" class="text-blue-600 hover:underline">
+                            <a href="https://www.arteveldehogeschool.be/nl/opleidingen"
+                                class="text-blue-600 hover:underline">
                                 Artevelde hogeschool opleidingen
                             </a>
                         </p>
