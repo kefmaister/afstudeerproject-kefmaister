@@ -15,7 +15,8 @@ return new class extends Migration
 
         Schema::create('logo', function (Blueprint $table) {
             $table->id();
-            $table->binary('image');
+            $table->string('path');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

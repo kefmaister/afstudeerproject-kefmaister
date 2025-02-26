@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('email');
             $table->string('class');
-            $table->bigInteger('studyfield_id');
+            $table->unsignedBigInteger('studyfield_id');
             $table->foreign('studyfield_id')->references('id')->on('studyfield');
             $table->integer('year');
             $table->unsignedBigInteger('proposal_id')->nullable();

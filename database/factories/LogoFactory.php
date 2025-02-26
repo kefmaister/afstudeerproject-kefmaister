@@ -12,7 +12,7 @@ class LogoFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => $this->faker->imageUrl(), // Use 'image' if you change the model
+            'path' => $this->faker->imageUrl(), 
         ];
     }
 }

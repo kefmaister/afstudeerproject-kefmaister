@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->text('firstname');
             $table->text('lastname');
-            $table->bigInteger('phone');
+            $table->string('phone');
             $table->string('email');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

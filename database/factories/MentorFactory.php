@@ -12,8 +12,10 @@ class MentorFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'  => $this->faker->name,
+            'firstname'  => $this->faker->firstname,
+            'lastname'   => $this->faker->lastname,
             'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->phoneNumber,
         ];
     }
 }

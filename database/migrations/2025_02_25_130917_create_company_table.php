@@ -19,14 +19,15 @@ return new class extends Migration
             $table->text('street');
             $table->smallInteger('streetNr');
             $table->text('town');
-            $table->integer('zip');
+            $table->string('zip');
             $table->bigInteger('mentor_id');
             $table->boolean('accepted');
             $table->integer('max_students');
             $table->integer('student_amount');
-            $table->bigInteger('logo_id');
+            $table->unsignedBigInteger('logo_id');
             $table->foreign('logo_id')->references('id')->on('logo');
-            $table->bigInteger('stage_id');
+
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
