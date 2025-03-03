@@ -15,14 +15,18 @@ return new class extends Migration
 
         Schema::create('proposal', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('stage_id');
-            $table->foreign('stage_id')->references('id')->on('stage');
+            $table->foreignId('stage_id')->constrained(
+                table: 'stage',
+                column: 'id',
+            );
             $table->text('tasks');
             $table->text('motivation');
             $table->tinyInteger('status');
             $table->text('feedback');
-            $table->unsignedBigInteger('coordinator_id');
-            $table->foreign('coordinator_id')->references('id')->on('coordinator');
+            $table->foreignId('coordinator_id')->constrained(
+                table: 'coordinator',
+                column: 'id',
+            );
             $table->timestamps();
         });
 

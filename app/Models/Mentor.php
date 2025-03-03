@@ -12,8 +12,9 @@ class Mentor extends Model
     protected $table = 'mentor';
 
     protected $fillable = [
-        // Add mentor-specific fields such as name, email, etc.
-        'name',
+        'firstname',
+        'lastname',
+        'phone',
         'email',
     ];
 

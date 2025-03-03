@@ -20,12 +20,19 @@ return new class extends Migration
             $table->smallInteger('streetNr');
             $table->text('town');
             $table->string('zip');
-            $table->bigInteger('mentor_id');
+            $table->foreignId('mentor_id')->constrained(
+                table: 'mentor',
+                column: 'id',
+            );
+
             $table->boolean('accepted');
             $table->integer('max_students');
             $table->integer('student_amount');
-            $table->unsignedBigInteger('logo_id');
-            $table->foreign('logo_id')->references('id')->on('logo');
+            $table->foreignId('logo_id')->constrained(
+                table: 'logo',
+                column: 'id',
+            );
+
 
             $table->timestamps();
         });

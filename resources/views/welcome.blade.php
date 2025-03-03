@@ -30,9 +30,19 @@
                 <nav class="space-x-4">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-gray-900">
-                                Dashboard
-                            </a>
+                            @if (Auth::user()->role === 'student')
+                                <a href="{{ route('student.home') }}" class="text-gray-700 hover:text-gray-900">
+                                    Dashboard
+                                </a>
+                            @elseif(Auth::user()->role === 'coordinator')
+                                <a href="{{ route('coordinator.home') }}" class="text-gray-700 hover:text-gray-900">
+                                    Dashboard
+                                </a>
+                            @elseif(Auth::user()->role === 'company')
+                                <a href="{{ route('company.home') }}" class="text-gray-700 hover:text-gray-900">
+                                    Dashboard
+                                </a>
+                            @endif
                         @else
                             <a href="{{ route('login') }}" class="text-gray-700 hover:text-gray-900">
                                 Log in
@@ -45,6 +55,7 @@
                             @endif
                         @endauth
                     @endif
+
                 </nav>
             </div>
         </header>
@@ -64,17 +75,17 @@
                         <!-- Hoofdwebsite -->
                         <h2 class="text-xl font-semibold mb-2">Hoofdwebsite</h2>
                         <p class="mb-6">
-                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline">
+                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline" target="_blank">
                                 Arteveldehogeschool
                             </a>
                         </p>
                         <p class="mb-6">
-                            <a href="https://programmeren.gent/" class="text-blue-600 hover:underline">
+                            <a href="https://programmeren.gent/" class="text-blue-600 hover:underline" target="_blank">
                                 Programmeren
                             </a>
                         </p>
                         <p class="mb-6">
-                            <a href="https://www.orm.gent/" class="text-blue-600 hover:underline">
+                            <a href="https://www.orm.gent/" class="text-blue-600 hover:underline" target="_blank">
                                 Organisatie en Management
                             </a>
                         </p>

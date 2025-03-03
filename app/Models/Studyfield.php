@@ -13,7 +13,6 @@ class Studyfield extends Model
 
     protected $fillable = [
         'name',
-        'description',
         // Add other studyfield columns as needed
     ];
 

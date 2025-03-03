@@ -22,10 +22,24 @@ class DatabaseSeeder extends Seeder
         // If you want an "admin" role, update your users migration to allow it.
         // For now, we assign an allowed role (for example, "coordinator").
         User::create([
-            'name'     => 'Admin',
-            'email'    => 'admin@mail.com',
+            'name'     => 'Coordinator',
+            'email'    => 'coordinator@mail.com',
             'password' => Hash::make('password'),
-            'role'     => 'coordinator', // Change to 'admin' if migration allows it.
+            'role'     => 'coordinator',
+        ]);
+
+        User::create([
+            'name'     => 'Company User',
+            'email'    => 'company@mail.com',
+            'password' => Hash::make('password'),
+            'role'     => 'company',
+        ]);
+
+        User::create([
+            'name'     => 'Student User',
+            'email'    => 'student@mail.com',
+            'password' => Hash::make('password'),
+            'role'     => 'student',
         ]);
 
         // Create 10 additional users
@@ -37,10 +51,10 @@ class DatabaseSeeder extends Seeder
         // Create coordinators, students, etc.
         Coordinator::factory(5)->create();
         Student::factory(10)->create();
+        Cv::factory(10)->create();
         Proposal::factory(7)->create();
         Company::factory(5)->create();
         Mentor::factory(5)->create();
-        Cv::factory(10)->create();
         Stage::factory(8)->create();
         Logo::factory(5)->create();
     }

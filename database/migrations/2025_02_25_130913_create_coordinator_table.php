@@ -11,15 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('coordinator', function (Blueprint $table) {
             $table->id();
             $table->text('firstname');
             $table->text('lastname');
             $table->string('email');
             $table->text('password');
-            $table->bigInteger('studyfield_id');
+            $table->foreignId('studyfield_id')->constrained(
+                table: 'studyfield',
+                column: 'id',
+            );
+
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

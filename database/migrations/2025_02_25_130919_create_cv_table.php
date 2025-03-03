@@ -15,6 +15,10 @@ return new class extends Migration
 
         Schema::create('cv', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained(
+                table: 'student',
+                column: 'id',
+            );
             $table->string('file');
             $table->text('feedback');
             $table->timestamps();

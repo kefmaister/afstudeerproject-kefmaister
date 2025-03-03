@@ -15,6 +15,7 @@ class CvFactory extends Factory
         return [
             'file'     => $this->faker->imageUrl(),
             'feedback' => $this->faker->sentence,
+            'student_id' => Student::inRandomOrder()->first()->id ?? Student::factory()->create()->id,
         ];
     }
 }

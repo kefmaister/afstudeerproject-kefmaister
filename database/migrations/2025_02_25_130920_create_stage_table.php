@@ -15,16 +15,23 @@ return new class extends Migration
 
         Schema::create('stage', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('company');
+            $table->foreignId('company_id')->constrained(
+                table: 'company',
+                column: 'id',
+            );
             $table->boolean('active');
-            $table->unsignedBigInteger('logo_id');
-            $table->foreign('logo_id')->references('id')->on('logo');
+            $table->foreignId('logo_id')->constrained(
+                table: 'logo',
+                column: 'id',
+            );
             $table->text('title');
             $table->text('tasks');
             // Removed student_id since a stage can be used in multiple proposals
-            $table->unsignedBigInteger('studyfield_id');
-            $table->foreign('studyfield_id')->references('id')->on('studyfield');
+            $table->foreignId('studyfield_id')->constrained(
+                table: 'studyfield',
+                column: 'id',
+            );
+
             $table->timestamps();
         });
 

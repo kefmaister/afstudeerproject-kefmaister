@@ -20,11 +20,19 @@ return new class extends Migration
             $table->string('password');
             $table->text('email');
             $table->string('class');
-            $table->unsignedBigInteger('studyfield_id');
-            $table->foreign('studyfield_id')->references('id')->on('studyfield');
+            $table->foreignId('studyfield_id')->constrained(
+                table: 'studyfield',
+                column: 'id',
+            );
             $table->integer('year');
-            $table->unsignedBigInteger('proposal_id')->nullable();
-            $table->bigInteger('cv_id');
+            $table->foreignId('proposal_id')->nullable()->constrained(
+                table: 'proposal',
+                column: 'id',
+            );
+            $table->foreignId('cv_id')->nullable()->constrained(
+                table: 'cv',
+                column: 'id',
+            );
             $table->timestamps();
         });
 

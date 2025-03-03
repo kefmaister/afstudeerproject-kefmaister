@@ -21,7 +21,7 @@ class StudentFactory extends Factory
             'class'         => $this->faker->randomElement(['A', 'B', 'C', 'D']),
             'year'          => $this->faker->numberBetween(date('Y') - 5, date('Y')),
             'proposal_id'   => null, // By default, the student may not have submitted a proposal.
-            'cv_id'         => Cv::factory()->create()->id, // Create a CV and assign its id.
+            'cv_id'         => null, // By default, the student may not have uploaded a CV.
             'studyfield_id' => Studyfield::inRandomOrder()->first()->id ?? Studyfield::factory()->create()->id,
 
         ];
