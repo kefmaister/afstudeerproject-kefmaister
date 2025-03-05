@@ -14,7 +14,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth::user()->role === 'student')
                         <x-nav-link :href="route('student.home')" :active="request()->routeIs('student.home')">
-                            {{ __('Student Home') }}
+                            {{ __('Stageplaatsen') }}
                         </x-nav-link>
                     @elseif (Auth::user()->role === 'coordinator')
                         <x-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')" class="text-gray-900">

@@ -21,7 +21,7 @@
         <!-- Logo -->
         <div>
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-[#FF2D20]" />
+                <x-application-logo class="w-auto h-auto fill-current text-[#FF2D20]" />
             </a>
         </div>
 
