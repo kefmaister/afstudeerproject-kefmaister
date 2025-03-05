@@ -7,8 +7,8 @@ xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []
 database:
-    type: mariadb
-    version: "10.11"
+  type: mysql
+  version: "8.0"
 use_dns_when_possible: true
 composer_version: "2"
 web_environment: []
@@ -17,7 +17,6 @@ corepack_enable: false
 host_webserver_port: "8000"
 host_https_port: "8001"
 host_db_port: "8002"
-
 # Key features of DDEV's config.yaml:
 
 # name: <projectname> # Name of the project, automatically provides
