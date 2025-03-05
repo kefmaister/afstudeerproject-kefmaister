@@ -23,15 +23,15 @@ Route::get('/', function () {
 
 
 
-Route::middleware(['auth', 'role:student'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/student/home', [StudentController::class, 'index'])->name('student.home');
 });
 
-Route::middleware(['auth', 'role:coordinator'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/coordinator/home', [CoordinatorController::class, 'index'])->name('coordinator.home');
 });
 
-Route::middleware(['auth', 'role:company'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/company/home', [CompanyController::class, 'index'])->name('company.home');
 });
 Route::get('/dashboard', function () {

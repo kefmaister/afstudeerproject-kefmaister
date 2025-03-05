@@ -1,6 +1,8 @@
-@extends('layouts.app')
+<x-app>
+    <x-slot name="header">
+        <h1>Dashboard</h1>
+    </x-slot>
 
-@section('content')
     <h1>Welcome, Coordinator!</h1>
     <p>This is your dashboard.</p>
-@endsection
+</x-app>
