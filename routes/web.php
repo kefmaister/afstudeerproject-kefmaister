@@ -25,6 +25,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/student/home', [StudentController::class, 'index'])->name('student.home');
+    Route::get('/student/upload', [StudentController::class, 'showUpload'])->name('student.showUpload');
+    Route::post('/student/upload', [StudentController::class, 'storeUpload'])->name('student.storeUpload');
 });
 
 Route::middleware(['auth'])->group(function () {

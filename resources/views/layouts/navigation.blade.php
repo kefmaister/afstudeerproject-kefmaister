@@ -16,6 +16,12 @@
                         <x-nav-link :href="route('student.home')" :active="request()->routeIs('student.home')">
                             {{ __('Stageplaatsen') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('student.showUpload')" :active="request()->routeIs('student.showUpload')">
+                            {{ __('Cv upload') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('student.proposal')" :active="request()->routeIs('student.proposal')">
+                            {{ __('Voorstel') }}
+                        </x-nav-link>
                     @elseif (Auth::user()->role === 'coordinator')
                         <x-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')" class="text-gray-900">
                             {{ __('Coordinator Home') }}
@@ -85,6 +91,9 @@
             @if (Auth::user()->role === 'student')
                 <x-responsive-nav-link :href="route('student.home')" :active="request()->routeIs('student.home')">
                     {{ __('Student Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('student.showUpload')" :active="request()->routeIs('student.showUpload')">
+                    {{ __('Cv upload') }}
                 </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'coordinator')
                 <x-responsive-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')">

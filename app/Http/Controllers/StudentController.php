@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stage;
+use App\Models\Cv;
 use Illuminate\Http\Request;
+
 
 class StudentController extends Controller
 {
@@ -80,4 +82,42 @@ class StudentController extends Controller
             'selectedStage' => $selectedStage,
         ]);
     }
+
+    public function showUpload(Request $request)
+    {
+        $cv = Cv::where('student_id', auth()->id())->first();
+
+        return view('student.upload', compact('cv'));
+    }
+
+    public function storeUpload(Request $request)
+{
+    // Validate input name = "file"
+    $request->validate([
+        'file' => 'required|mimes:pdf|max:2048',
+    ]);
+
+    // If an existing CV exists for this student, remove it
+    $existingCv = Cv::where('student_id', auth()->id())->first();
+    if ($existingCv) {
+        $existingCv->delete();
+    }
+
+    // Create a new CV record
+    $cv = new Cv();
+    $cv->student_id = auth()->id();
+
+    // Store in storage/app/public/cvs, returning a path like "cvs/abc123.pdf"
+    // Make sure you have run: php artisan storage:link
+    $cv->file = $request->file('file')->store('cvs', 'public');
+
+    $cv->feedback = 'Uploaded on ' . now()->toDateTimeString();
+
+
+
+    $cv->save();
+
+    return redirect()->route('student.showUpload')->with('status', 'CV uploaded successfully!');
+}
+
 }

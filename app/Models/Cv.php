@@ -12,7 +12,8 @@ class Cv extends Model
     protected $table = 'cv';
 
     protected $fillable = [
-        'content',
+        'file',
+        'feedback',
         'student_id',
     ];
 
