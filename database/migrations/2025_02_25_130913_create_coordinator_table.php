@@ -16,10 +16,10 @@ return new class extends Migration
 
         Schema::create('coordinator', function (Blueprint $table) {
             $table->id();
-            $table->text('firstname');
-            $table->text('lastname');
-            $table->string('email');
-            $table->text('password');
+            $table->foreignId('user_id')->constrained(
+                table: 'users',
+                column: 'id',
+            );
             $table->foreignId('studyfield_id')->constrained(
                 table: 'studyfield',
                 column: 'id',

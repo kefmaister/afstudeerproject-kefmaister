@@ -12,22 +12,12 @@ class Student extends Model
     protected $table = 'student';
 
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'password',
-        'email',
+        'user_id',
         'class',
         'studyfield_id',
         'year',
-        'proposal_id',
         'cv_id',
     ];
-
-    // A student is associated with one proposal.
-    public function proposal()
-    {
-        return $this->belongsTo(Proposal::class, 'proposal_id');
-    }
 
     // A student belongs to one studyfield.
     public function studyfield()
@@ -35,9 +25,21 @@ class Student extends Model
         return $this->belongsTo(Studyfield::class, 'studyfield_id');
     }
 
+    public function proposal()
+{
+    return $this->hasOne(Proposal::class, 'student_id');
+}
+
+
     // A student belongs to one CV, since cv_id is stored on the student.
     public function cv()
     {
         return $this->belongsTo(Cv::class, 'cv_id');
+    }
+
+    // A student belongs to a user.
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

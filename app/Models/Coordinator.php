@@ -12,10 +12,7 @@ class Coordinator extends Model
     protected $table = 'coordinator';
 
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'email',
-        'password',
+        'user_id',
         'studyfield_id',
     ];
 
@@ -29,5 +26,11 @@ class Coordinator extends Model
     public function proposals()
     {
         return $this->hasMany(Proposal::class, 'coordinator_id');
+    }
+
+    // A coordinator belongs to a user.
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

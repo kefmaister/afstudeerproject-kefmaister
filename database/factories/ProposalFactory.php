@@ -16,7 +16,7 @@ class ProposalFactory extends Factory
     {
         return [
             'stage_id'       => Stage::factory(),
-            'student_id'     => Student::factory(),
+            'student_id'     => Student::inRandomOrder()->first()->id ?? Student::factory()->create()->id,
             'tasks'          => $this->faker->text,
             'motivation'     => $this->faker->paragraph,
             'status'         => $this->faker->numberBetween(0, 1), // e.g. 0 = pending, 1 = approved/denied

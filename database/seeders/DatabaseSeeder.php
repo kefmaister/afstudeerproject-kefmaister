@@ -22,21 +22,24 @@ class DatabaseSeeder extends Seeder
         // If you want an "admin" role, update your users migration to allow it.
         // For now, we assign an allowed role (for example, "coordinator").
         User::create([
-            'name'     => 'Coordinator',
+            'firstname'     => 'Coordinator',
+            'lastname'     => 'User',
             'email'    => 'coordinator@mail.com',
             'password' => Hash::make('password'),
             'role'     => 'coordinator',
         ]);
 
         User::create([
-            'name'     => 'Company User',
+            'firstname'     => 'Company',
+            'lastname'     => 'User',
             'email'    => 'company@mail.com',
             'password' => Hash::make('password'),
             'role'     => 'company',
         ]);
 
         User::create([
-            'name'     => 'Student User',
+            'firstname'     => 'Student',
+            'lastname'     => 'User',
             'email'    => 'student@mail.com',
             'password' => Hash::make('password'),
             'role'     => 'student',

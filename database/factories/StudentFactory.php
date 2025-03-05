@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Student;
 use App\Models\Studyfield;
 use App\Models\Cv;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StudentFactory extends Factory
@@ -14,13 +15,9 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'firstname'     => $this->faker->firstName,
-            'lastname'      => $this->faker->lastName,
-            'password'      => bcrypt('password'),
-            'email'         => $this->faker->unique()->safeEmail,
+            'user_id'       => User::factory(),
             'class'         => $this->faker->randomElement(['A', 'B', 'C', 'D']),
             'year'          => $this->faker->numberBetween(date('Y') - 5, date('Y')),
-            'proposal_id'   => null, // By default, the student may not have submitted a proposal.
             'cv_id'         => null, // By default, the student may not have uploaded a CV.
             'studyfield_id' => Studyfield::inRandomOrder()->first()->id ?? Studyfield::factory()->create()->id,
 

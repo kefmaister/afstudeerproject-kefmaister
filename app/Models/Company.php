@@ -22,7 +22,7 @@ class Company extends Model
         'max_students',
         'student_amount',
         'logo_id',
-        // 'stage_id', // If this is not used because stages are linked via company_id in Stage, consider removing it.
+        'user_id',
     ];
 
     // A company has a mentor.
@@ -41,5 +41,11 @@ class Company extends Model
     public function stages()
     {
         return $this->hasMany(Stage::class, 'company_id');
+    }
+
+    // A company belongs to a user.
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

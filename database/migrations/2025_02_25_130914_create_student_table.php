@@ -15,20 +15,16 @@ return new class extends Migration
 
         Schema::create('student', function (Blueprint $table) {
             $table->id();
-            $table->text('firstname');
-            $table->text('lastname');
-            $table->string('password');
-            $table->text('email');
+            $table->foreignId('user_id')->constrained(
+                table: 'users',
+                column: 'id',
+            );
             $table->string('class');
             $table->foreignId('studyfield_id')->constrained(
                 table: 'studyfield',
                 column: 'id',
             );
             $table->integer('year');
-            $table->foreignId('proposal_id')->nullable()->constrained(
-                table: 'proposal',
-                column: 'id',
-            );
             $table->foreignId('cv_id')->nullable()->constrained(
                 table: 'cv',
                 column: 'id',

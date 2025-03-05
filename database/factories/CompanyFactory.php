@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Company;
 use App\Models\Mentor;
 use App\Models\Logo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CompanyFactory extends Factory
@@ -24,6 +25,7 @@ class CompanyFactory extends Factory
             'max_students'   => $this->faker->numberBetween(1, 100),
             'student_amount' => $this->faker->numberBetween(0, 100),
             'logo_id'        => Logo::factory(),
+            'user_id'        => User::factory(),
         ];
     }
 }

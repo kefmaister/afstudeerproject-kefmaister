@@ -15,6 +15,10 @@ return new class extends Migration
 
         Schema::create('company', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained(
+                table: 'users',
+                column: 'id',
+            );
             $table->text('company_name');
             $table->text('street');
             $table->smallInteger('streetNr');
@@ -24,8 +28,6 @@ return new class extends Migration
                 table: 'mentor',
                 column: 'id',
             );
-            
-
             $table->boolean('accepted');
             $table->integer('max_students');
             $table->integer('student_amount');

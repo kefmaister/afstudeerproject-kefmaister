@@ -12,6 +12,7 @@ class Proposal extends Model
     protected $table = 'proposal';
 
     protected $fillable = [
+        'student_id',
         'stage_id',        // Renamed from Stage_id for consistency; adjust migration if needed
         'tasks',
         'motivation',
