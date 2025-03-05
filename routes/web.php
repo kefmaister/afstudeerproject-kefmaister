@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\CoordinatorProposalController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -21,31 +22,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Student Routes
+Route::middleware(['auth'])->prefix('student')->name('student.')->group(function () {
+    Route::get('/home', [StudentController::class, 'index'])->name('home');
+    Route::get('/upload', [StudentController::class, 'showUpload'])->name('showUpload');
+    Route::post('/upload', [StudentController::class, 'storeUpload'])->name('storeUpload');
 
+    // Proposal Routes for Students:
+    // The proposal form view where the student can fill out or view their proposal.
+    Route::get('/proposal', [ProposalController::class, 'show'])->name('proposal.show');
+    // Handle form submission (sending the proposal)
+    Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
+});
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/student/home', [StudentController::class, 'index'])->name('student.home');
-    Route::get('/student/upload', [StudentController::class, 'showUpload'])->name('student.showUpload');
-    Route::post('/student/upload', [StudentController::class, 'storeUpload'])->name('student.storeUpload');
+// Coordinator Routes
+Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(function () {
+    Route::get('/home', [CoordinatorController::class, 'index'])->name('home');
+    // Routes for coordinators to review proposals:
+    Route::get('/proposals', [CoordinatorProposalController::class, 'index'])->name('proposals.index');
+    Route::post('/proposals/{proposal}/approve', [CoordinatorProposalController::class, 'approve'])->name('proposals.approve');
+    // Optionally add a route for denying proposals.
+});
+
+// Company Routes
+Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
+    Route::get('/home', [CompanyController::class, 'index'])->name('home');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/coordinator/home', [CoordinatorController::class, 'index'])->name('coordinator.home');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/company/home', [CompanyController::class, 'index'])->name('company.home');
-});
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 
 require __DIR__.'/auth.php';

@@ -15,6 +15,10 @@ return new class extends Migration
 
         Schema::create('proposal', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained(
+                table: 'student',
+                column: 'id',
+            );
             $table->foreignId('stage_id')->constrained(
                 table: 'stage',
                 column: 'id',
@@ -22,7 +26,7 @@ return new class extends Migration
             $table->text('tasks');
             $table->text('motivation');
             $table->tinyInteger('status');
-            $table->text('feedback');
+            $table->text('feedback')->nullable();
             $table->foreignId('coordinator_id')->constrained(
                 table: 'coordinator',
                 column: 'id',

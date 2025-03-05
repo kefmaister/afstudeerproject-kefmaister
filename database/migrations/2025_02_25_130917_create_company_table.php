@@ -24,6 +24,7 @@ return new class extends Migration
                 table: 'mentor',
                 column: 'id',
             );
+            
 
             $table->boolean('accepted');
             $table->integer('max_students');

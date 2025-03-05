@@ -23,7 +23,7 @@ class Proposal extends Model
     // A proposal is linked to one student (the student that filled it out).
     public function student()
     {
-        return $this->hasOne(Student::class, 'proposal_id');
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     // A proposal is reviewed by a coordinator.
