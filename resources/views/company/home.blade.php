@@ -4,5 +4,5 @@
     </x-slot>
 
     <h1>Welcome, Company Representive!</h1>
-    <p>This is your dashboard.</p>
+    <p>This is your awesome dashboard.</p>
 </x-app>
