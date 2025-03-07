@@ -52,4 +52,8 @@ class User extends Authenticatable
 {
     return $this->firstname . ' ' . $this->lastname;
 }
+public function student()
+{
+    return $this->hasOne(Student::class);
+}
 }

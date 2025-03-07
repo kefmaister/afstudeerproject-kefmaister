@@ -38,12 +38,11 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
 // Coordinator Routes
 Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(function () {
     Route::get('/home', [CoordinatorController::class, 'index'])->name('home');
-    // Routes for coordinators to review proposals:
-    Route::get('/proposals', [CoordinatorProposalController::class, 'index'])->name('proposals.index');
-    Route::post('/proposals/{proposal}/approve', [CoordinatorProposalController::class, 'approve'])->name('proposals.approve');
-    // Optionally add a route for denying proposals.
+    Route::get('/student/{student}', [CoordinatorController::class, 'showStudent'])->name('student.show');
+    Route::get('/student/{student}/cv', [CoordinatorController::class, 'showStudentCv'])->name('student.cv');
+    Route::get('/student/{student}/proposal', [CoordinatorController::class, 'showStudentProposal'])->name('student.proposal');
+    Route::post('/cv/{cv}/feedback', [CoordinatorController::class, 'giveCvFeedback'])->name('cv.feedback');
 });
-
 // Company Routes
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
     Route::get('/home', [CompanyController::class, 'index'])->name('home');

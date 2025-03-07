@@ -16,11 +16,11 @@
             <h2 class="text-xl font-semibold mb-4">Voorbeeld</h2>
 
             @if (isset($cv) && $cv->exists)
-                <!-- Note: reference $cv->path here -->
-                <iframe src="{{ asset('storage/' . $cv->file) }}" style="width: 100%; height: 600px;" frameborder="0">
-                    </iframe>
-                @else
-                    <p class="text-gray-600">Nog geen CV geüpload.</p>
+                <!-- Note: reference $cv->file here -->
+                <iframe src="{{ asset('storage/' . $cv->file) }}" style="width: 100%; height: 600px;"
+                    frameborder="0"></iframe>
+            @else
+                <p class="text-gray-600">Nog geen CV geüpload.</p>
             @endif
         </div>
 
