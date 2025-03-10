@@ -1,32 +1,65 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Proposal;
+use App\Models\Mentor;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class ProposalController extends Controller
 {
     public function show(Request $request)
     {
-        // 1) Get the logged-in student’s proposal (if it exists)
+        // Get the logged-in student’s proposal (if it exists)
         $proposal = Proposal::with('stage.company')->where('student_id', auth()->id())->first();
 
-        // 2) If no proposal, we’ll assume we’re in the “start” state
-
-
-
-        // 3) If status is “pending” or “approved,” we’ll show a locked form
-        //    and the relevant coordinator info or final page
+        // If the proposal doesn't exist, create a new empty proposal
+        if (!$proposal) {
+            $proposal = new Proposal();
+        }
 
         return view('student.proposal', [
             'proposal' => $proposal,
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $stageId = $request->input('stage_id');
+        $stage = Stage::with('company')->findOrFail($stageId);
+
+        // Get the logged-in student
+        $studentId = auth()->id();
+
+        // Get the coordinator_id from the stage's study field
+        $coordinatorId = $stage->studyfield->coordinator_id;
+
+        // Create a new proposal with the company information filled in based on the selected stage
+        $proposal = Proposal::firstOrNew([
+            'student_id' => $studentId,
+            'stage_id' => $stageId,
+        ]);
+
+        if (!$proposal->exists) {
+            $proposal->fill([
+                'status' => 'draft',
+                'coordinator_id' => $coordinatorId,
+            ]);
+            $proposal->save();
+        } else {
+            // Ensure the status is set to draft if not already set to pending, approved, or denied
+            if (!in_array($proposal->status, ['pending', 'approved', 'denied'])) {
+                $proposal->status = 'draft';
+                $proposal->save();
+            }
+        }
+
+        return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
+    }
+
     public function store(Request $request)
     {
-// Validate form input
+        // Validate form input
         $validated = $request->validate([
             'company_name' => 'required|string|max:255',
             'street' => 'required|string|max:255',
@@ -47,25 +80,24 @@ class ProposalController extends Controller
         // Fill fields from validated data
         $proposal->fill($validated);
 
-        // Set status to pending once they “send” the proposal
-        $proposal->status = 'pending';
+        // Set status to draft if not already set
+        if (!$proposal->exists) {
+            $proposal->status = 'draft';
+        }
 
-        // If you want to automatically assign a coordinator based on the student's studyfield:
-        // $proposal->coordinator_id = auth()->user()->studyfield->coordinator->id ?? null;
-
+        // Save the proposal
         $proposal->save();
+
+        // Create a new mentor and link to the company based on the stage ID
+        $mentor = Mentor::create([
+            'firstname' => $request->input('stage_mentor'),
+            'lastname' => '',
+            'phone' => '',
+            'email' => $request->input('stage_mentor_email'),
+            'company_id' => $proposal->stage->company->id,
+        ]);
 
         return redirect()->route('proposal.show')
             ->with('status', 'Proposal submitted successfully!');
     }
-
-    public function approve(Proposal $proposal)
-{
-    $proposal->status = 'approved';
-    $proposal->feedback = 'Goed gedaan!';
-    $proposal->save();
-
-    return back()->with('status', 'Proposal approved!');
-}
-
 }

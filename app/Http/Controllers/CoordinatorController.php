@@ -22,7 +22,10 @@ class CoordinatorController extends Controller
         // 1) Search by student name
         if ($search = $request->input('search')) {
             $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
+            $q->where(function ($query) use ($search) {
+                $query->where('firstname', 'like', "%{$search}%")
+                  ->orWhere('lastname', 'like', "%{$search}%");
+            });
             });
         }
 

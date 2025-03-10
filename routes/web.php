@@ -28,11 +28,11 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
     Route::get('/upload', [StudentController::class, 'showUpload'])->name('showUpload');
     Route::post('/upload', [StudentController::class, 'storeUpload'])->name('storeUpload');
 
-    // Proposal Routes for Students:
-    // The proposal form view where the student can fill out or view their proposal.
+});
+Route::middleware(['auth'])->group(function () {
     Route::get('/proposal', [ProposalController::class, 'show'])->name('proposal.show');
-    // Handle form submission (sending the proposal)
-    Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
+    Route::post('/proposal/create', [ProposalController::class, 'create'])->name('proposal.create');
+    Route::post('/proposal/store', [ProposalController::class, 'store'])->name('proposal.store');
 });
 
 // Coordinator Routes

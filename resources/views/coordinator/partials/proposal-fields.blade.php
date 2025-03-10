@@ -1,32 +1,34 @@
+<!-- In resources/views/coordinator/partials/proposal-fields.blade.php -->
+
 <div class="grid grid-cols-2 gap-4">
     <!-- Company Name -->
     <div>
         <label class="block font-semibold mb-1">Bedrijf naam</label>
-        <input type="text" value="{{ $proposal->company_name ?? '' }}" disabled
+        <input type="text" value="{{ $proposal->stage->company->company_name ?? '' }}" disabled
             class="w-full border-gray-300 rounded p-2 bg-gray-100">
     </div>
     <div>
         <label class="block font-semibold mb-1">Straat</label>
-        <input type="text" value="{{ $proposal->street ?? '' }}" disabled
+        <input type="text" value="{{ $proposal->stage->company->street ?? '' }}" disabled
             class="w-full border-gray-300 rounded p-2 bg-gray-100">
     </div>
 
     <!-- Nr / Postcode -->
     <div>
         <label class="block font-semibold mb-1">Nr</label>
-        <input type="text" value="{{ $proposal->nr ?? '' }}" disabled
+        <input type="text" value="{{ $proposal->stage->company->streetNr ?? '' }}" disabled
             class="w-full border-gray-300 rounded p-2 bg-gray-100">
     </div>
     <div>
         <label class="block font-semibold mb-1">Postcode</label>
-        <input type="text" value="{{ $proposal->zip ?? '' }}" disabled
+        <input type="text" value="{{ $proposal->stage->company->zip ?? '' }}" disabled
             class="w-full border-gray-300 rounded p-2 bg-gray-100">
     </div>
 
     <!-- Gemeente / Mentor -->
     <div>
         <label class="block font-semibold mb-1">Gemeente</label>
-        <input type="text" value="{{ $proposal->town ?? '' }}" disabled
+        <input type="text" value="{{ $proposal->stage->company->town ?? '' }}" disabled
             class="w-full border-gray-300 rounded p-2 bg-gray-100">
     </div>
     <div>
