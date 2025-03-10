@@ -35,9 +35,6 @@
             </div>
         </main>
     </div>
-
-    <!-- Livewire Scripts -->
-    @livewireScripts
 </body>
 
 </html>

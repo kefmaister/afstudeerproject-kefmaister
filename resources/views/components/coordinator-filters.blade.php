@@ -40,18 +40,6 @@
         </select>
     </div>
 
-    <!-- Contract Status Filter -->
-    <div>
-        <label for="contract_status" class="sr-only">Contract Status</label>
-        <select id="contract_status" name="contract_status"
-            class="border border-gray-300 rounded p-2 pr-8 min-w-[200px]">
-            <option value="">Alle Contractstatussen</option>
-            <option value="not_started" @selected($contractStatus === 'not_started')>Niet gestart</option>
-            <option value="in_progress" @selected($contractStatus === 'in_progress')>Bezig</option>
-            <option value="complete" @selected($contractStatus === 'complete')>Compleet</option>
-        </select>
-    </div>
-
     <!-- Submit Button -->
     <div>
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">

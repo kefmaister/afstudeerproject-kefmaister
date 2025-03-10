@@ -17,7 +17,6 @@ class Stage extends Model
         'logo_id',
         'title',
         'tasks',
-        // 'student_id', // If this column is no longer used to indicate assignments, you might remove it.
         'studyfield_id',
     ];
 

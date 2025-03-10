@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Proposal;
+use App\Models\Cv;
 use App\Models\Studyfield;
 use Illuminate\Http\Request;
 
@@ -54,5 +55,112 @@ class CoordinatorController extends Controller
             'students' => $students,
             'studyfields' => $studyfields,
         ]);
+    }
+
+    public function showStudent(Student $student)
+    {
+        // Load the student's CV
+        $cv = Cv::where('student_id', $student->id)->first();
+
+        // Load all students in an ordered collection
+        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
+
+        // Find the index of the current student in that collection
+        $currentIndex = $students->search(function ($s) use ($student) {
+            return $s->id === $student->id;
+        });
+
+        // Compute prev and next
+        $prevStudentId = null;
+        $nextStudentId = null;
+
+        if ($currentIndex > 0) {
+            $prevStudentId = $students[$currentIndex - 1]->id;
+        }
+        if ($currentIndex < $students->count() - 1) {
+            $nextStudentId = $students[$currentIndex + 1]->id;
+        }
+
+        // Return the view
+        return view('coordinator.student-detail', [
+            'student' => $student,
+            'students' => $students,
+            'prevStudentId' => $prevStudentId,
+            'nextStudentId' => $nextStudentId,
+            'cv' => $cv,
+        ]);
+    }
+
+    public function showStudentCv(Student $student)
+    {
+        $cv = Cv::where('student_id', $student->id)->first();
+        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
+
+        // Find the index of the current student in that collection
+        $currentIndex = $students->search(function ($s) use ($student) {
+            return $s->id === $student->id;
+        });
+
+        // Compute prev and next
+        $prevStudentId = null;
+        $nextStudentId = null;
+
+        if ($currentIndex > 0) {
+            $prevStudentId = $students[$currentIndex - 1]->id;
+        }
+        if ($currentIndex < $students->count() - 1) {
+            $nextStudentId = $students[$currentIndex + 1]->id;
+        }
+
+        return view('coordinator.partials.cv-page', compact('student', 'cv', 'students', 'prevStudentId', 'nextStudentId'));
+    }
+
+    public function showStudentProposal(Student $student)
+    {
+        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
+
+        // Find the index of the current student in that collection
+        $currentIndex = $students->search(function ($s) use ($student) {
+            return $s->id === $student->id;
+        });
+
+        // Compute prev and next
+        $prevStudentId = null;
+        $nextStudentId = null;
+
+        if ($currentIndex > 0) {
+            $prevStudentId = $students[$currentIndex - 1]->id;
+        }
+        if ($currentIndex < $students->count() - 1) {
+            $nextStudentId = $students[$currentIndex + 1]->id;
+        }
+
+        return view('coordinator.partials.proposal-page', compact('student', 'students', 'prevStudentId', 'nextStudentId'));
+    }
+
+    public function updateProposal(Request $request, Proposal $proposal)
+    {
+        $request->validate([
+            'status' => 'required|string|in:approved,denied,pending',
+            'feedback' => 'nullable|string|max:255',
+        ]);
+
+        $proposal->status = $request->input('status');
+        $proposal->feedback = $request->input('feedback');
+        $proposal->save();
+
+        return redirect()->route('coordinator.student.proposal', $proposal->student_id)->with('status', 'Proposal updated successfully.');
+    }
+
+    public function giveCvFeedback(Request $request, Cv $cv)
+    {
+        $request->validate([
+            'feedback' => 'required|string|max:255',
+        ]);
+
+        $cv->feedback = $request->feedback;
+        $cv->save();
+
+        return redirect()->route('coordinator.student.show', $cv->student_id)->with('status', 'Feedback gegeven.');
     }
 }

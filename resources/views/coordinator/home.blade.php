@@ -21,9 +21,6 @@
                         Voorstel Status
                     </th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                        Contract Status
-                    </th>
-                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                         Klasgroep
                     </th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
@@ -35,13 +32,14 @@
                 @forelse($students as $student)
                     <tr>
                         <td class="px-4 py-2 whitespace-nowrap">
-                            {{ $student->user->firstname . ' ' . $student->user->lastname }}
+                            <a href="{{ route('coordinator.student.proposal', $student->id) }}"
+                                class="text-blue-600 hover:underline">
+                                {{ $student->user->firstname . ' ' . $student->user->lastname }}
+                            </a>
                         </td>
+
                         <td class="px-4 py-2 whitespace-nowrap">
                             {{ $student->proposal->status ?? 'N/A' }}
-                        </td>
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            {{ $student->contract_status ?? 'N/A' }}
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap">
                             {{ $student->studyfield->name ?? 'N/A' }}
