@@ -21,7 +21,11 @@
             </p>
         @endif
         <div class="mt-4 flex space-x-2">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded">Voorstel</button>
+            <form method="POST" action="{{ route('proposal.create') }}">
+                @csrf
+                <input type="hidden" name="stage_id" value="{{ $selectedStage->id }}">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Voorstel</button>
+            </form>
             <button class="bg-gray-200 text-black px-4 py-2 rounded">Zicht</button>
         </div>
     </div>

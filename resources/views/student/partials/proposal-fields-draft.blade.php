@@ -2,7 +2,7 @@
 
 <!-- Draft: Student can fill out the form -->
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-    <form method="POST" action="{{ route('student.proposal.store') }}" class="space-y-4">
+    <form method="POST" action="{{ route('proposal.store') }}" class="space-y-4">
         @csrf
 
         <!-- Row 1: Company Name, Street, Nr -->
