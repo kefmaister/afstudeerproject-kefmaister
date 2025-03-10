@@ -10,11 +10,11 @@ class ProposalController extends Controller
     public function show(Request $request)
     {
         // 1) Get the logged-in student’s proposal (if it exists)
-        $proposal = Proposal::where('student_id', auth()->id())->first();
+        $proposal = Proposal::with('stage.company')->where('student_id', auth()->id())->first();
 
         // 2) If no proposal, we’ll assume we’re in the “start” state
 
-        
+
 
         // 3) If status is “pending” or “approved,” we’ll show a locked form
         //    and the relevant coordinator info or final page
@@ -26,10 +26,17 @@ class ProposalController extends Controller
 
     public function store(Request $request)
     {
-        // Validate form input
+// Validate form input
         $validated = $request->validate([
             'company_name' => 'required|string|max:255',
-            // add other fields as needed
+            'street' => 'required|string|max:255',
+            'nr' => 'required|string|max:10',
+            'zip' => 'required|string|max:10',
+            'town' => 'required|string|max:255',
+            'stage_mentor' => 'required|string|max:255',
+            'stage_mentor_email' => 'required|email|max:255',
+            'tasks' => 'required|string',
+            'motivation' => 'required|string',
         ]);
 
         // Find or create the student's proposal
