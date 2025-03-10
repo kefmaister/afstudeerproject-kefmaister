@@ -1,9 +1,11 @@
 @props(['students', 'currentStudent'])
 
 <div x-data="{ open: false, search: '' }" class="relative">
-    <button @click="open = !open" class="bg-gray-100 px-3 py-2 rounded hover:bg-gray-200 focus:outline-none">
-        <span class="mr-2">{{ $currentStudent->user->firstname . ' ' . $currentStudent->user->lastname }}</span>
-        <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button @click="open = !open"
+        class="bg-gray-100 px-3 py-2 rounded hover:bg-gray-200 focus:outline-none w-48 text-left flex items-center">
+        <span class="mr-2 truncate"
+            style="max-width: calc(100% - 1.5rem);">{{ $currentStudent->user->firstname . ' ' . $currentStudent->user->lastname }}</span>
+        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
     </button>
@@ -16,10 +18,19 @@
                 @php
                     $color = 'text-gray-500'; // Default color for N/A
                     if ($s->proposal) {
-                        if ($s->proposal->status === 'approved') {
-                            $color = 'text-green-500';
-                        } elseif ($s->proposal->status === 'denied') {
-                            $color = 'text-red-500';
+                        switch ($s->proposal->status) {
+                            case 'draft':
+                                $color = 'text-blue-500';
+                                break;
+                            case 'pending':
+                                $color = 'text-yellow-500';
+                                break;
+                            case 'approved':
+                                $color = 'text-green-500';
+                                break;
+                            case 'denied':
+                                $color = 'text-red-500';
+                                break;
                         }
                     }
                 @endphp

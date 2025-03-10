@@ -12,8 +12,20 @@
                 </x-nav-link>
             </div>
             <div class="flex items-center space-x-6">
+                @if ($prevStudentId)
+                    <x-nav-link href="{{ route('coordinator.student.proposal', $prevStudentId) }}"
+                        class="px-3 py-2 bg-gray-100 rounded hover:bg-gray-200">
+                        ← Previous
+                    </x-nav-link>
+                @endif
                 <!-- Use the student-dropdown component -->
                 <x-student-dropdown :students="$students" :currentStudent="$student" />
+                @if ($nextStudentId)
+                    <x-nav-link href="{{ route('coordinator.student.proposal', $nextStudentId) }}"
+                        class="px-3 py-2 bg-gray-100 rounded hover:bg-gray-200">
+                        Next →
+                    </x-nav-link>
+                @endif
             </div>
     </x-slot>
 

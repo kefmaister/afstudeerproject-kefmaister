@@ -19,7 +19,7 @@ class ProposalFactory extends Factory
             'student_id'     => Student::inRandomOrder()->first()->id ?? Student::factory()->create()->id,
             'tasks'          => $this->faker->text,
             'motivation'     => $this->faker->paragraph,
-            'status'         => $this->faker->numberBetween(0, 1), // e.g. 0 = pending, 1 = approved/denied
+            'status'         => $this->faker->RandomElement(['draft', 'pending', 'approved', 'denied']),
             'feedback'       => $this->faker->sentence,
             'coordinator_id' => \App\Models\Coordinator::factory(),
         ];

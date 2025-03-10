@@ -2,13 +2,13 @@
     <x-slot name="header">
         <!-- Three-step header -->
         <div class="flex items-center space-x-8">
-            <div class="text-xl font-semibold text-gray-800">
+            <div class="text-xl font-semibold {{ $proposal->status === 'draft' ? 'text-gray-800' : 'text-gray-400' }}">
                 1) Voorstel
             </div>
-            <div class="text-xl font-semibold text-gray-400">
+            <div class="text-xl font-semibold {{ $proposal->status === 'pending' ? 'text-gray-800' : 'text-gray-400' }}">
                 – 2) Pending –
             </div>
-            <div class="text-xl font-semibold text-gray-400">
+            <div class="text-xl font-semibold {{ in_array($proposal->status, ['approved', 'denied']) ? 'text-gray-800' : 'text-gray-400' }}">
                 – 3) Conclusie
             </div>
         </div>

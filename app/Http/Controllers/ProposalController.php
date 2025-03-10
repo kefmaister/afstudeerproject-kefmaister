@@ -13,6 +13,9 @@ class ProposalController extends Controller
         $proposal = Proposal::where('student_id', auth()->id())->first();
 
         // 2) If no proposal, we’ll assume we’re in the “start” state
+
+        
+
         // 3) If status is “pending” or “approved,” we’ll show a locked form
         //    and the relevant coordinator info or final page
 

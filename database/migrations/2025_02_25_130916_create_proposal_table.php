@@ -25,7 +25,7 @@ return new class extends Migration
             );
             $table->text('tasks');
             $table->text('motivation');
-            $table->tinyInteger('status');
+            $table->text('status');
             $table->text('feedback')->nullable();
             $table->foreignId('coordinator_id')->constrained(
                 table: 'coordinator',

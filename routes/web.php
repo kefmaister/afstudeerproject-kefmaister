@@ -41,6 +41,7 @@ Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(
     Route::get('/student/{student}', [CoordinatorController::class, 'showStudent'])->name('student.show');
     Route::get('/student/{student}/cv', [CoordinatorController::class, 'showStudentCv'])->name('student.cv');
     Route::get('/student/{student}/proposal', [CoordinatorController::class, 'showStudentProposal'])->name('student.proposal');
+    Route::put('/proposal/{proposal}', [CoordinatorController::class, 'updateProposal'])->name('proposal.update');
     Route::post('/cv/{cv}/feedback', [CoordinatorController::class, 'giveCvFeedback'])->name('cv.feedback');
 });
 // Company Routes
