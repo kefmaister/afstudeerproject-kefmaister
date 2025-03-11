@@ -24,38 +24,41 @@ class ProposalController extends Controller
     }
 
     public function create(Request $request)
-    {
-        $stageId = $request->input('stage_id');
-        $stage = Stage::with('company')->findOrFail($stageId);
+{
+    $stageId = $request->input('stage_id');
+    // Eager load both company and studyfield
+    $stage = Stage::with(['company', 'studyfield'])->findOrFail($stageId);
 
-        // Get the logged-in student
-        $studentId = auth()->id();
+    // Get the logged-in student
+    $studentId = auth()->id();
 
-        // Get the coordinator_id from the stage's study field
-        $coordinatorId = $stage->studyfield->coordinator_id;
+    // Get the coordinator_id from the stage's study field
+    $coordinatorId = $stage->studyfield->coordinator_id;
 
-        // Create a new proposal with the company information filled in based on the selected stage
-        $proposal = Proposal::firstOrNew([
-            'student_id' => $studentId,
-            'stage_id' => $stageId,
+    // Create a new proposal with the company information filled in based on the selected stage
+    $proposal = Proposal::firstOrNew([
+        'student_id' => $studentId,
+        'stage_id'  => $stageId,
+    ]);
+
+    if (!$proposal->exists) {
+        $proposal->fill([
+            'status'         => 'draft',
+            'coordinator_id' => $coordinatorId,
+            'tasks'          => '', // default empty tasks
+            'motivation'     => '', // default empty motivation
         ]);
-
-        if (!$proposal->exists) {
-            $proposal->fill([
-                'status' => 'draft',
-                'coordinator_id' => $coordinatorId,
-            ]);
+        $proposal->save();
+    } else {
+        // Ensure the status is set to draft if not already set to pending, approved, or denied
+        if (!in_array($proposal->status, ['pending', 'approved', 'denied'])) {
+            $proposal->status = 'draft';
             $proposal->save();
-        } else {
-            // Ensure the status is set to draft if not already set to pending, approved, or denied
-            if (!in_array($proposal->status, ['pending', 'approved', 'denied'])) {
-                $proposal->status = 'draft';
-                $proposal->save();
-            }
         }
-
-        return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
     }
+
+    return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
+}
 
     public function store(Request $request)
     {
