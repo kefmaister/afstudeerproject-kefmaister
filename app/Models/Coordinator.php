@@ -13,13 +13,12 @@ class Coordinator extends Model
 
     protected $fillable = [
         'user_id',
-        'studyfield_id',
     ];
 
     // A coordinator belongs to one studyfield.
-    public function studyfield()
+    public function studyfields()
     {
-        return $this->belongsTo(Studyfield::class, 'studyfield_id');
+        return $this->hasMany(Studyfield::class, 'coordinator_id');
     }
 
     // A coordinator can review many proposals.

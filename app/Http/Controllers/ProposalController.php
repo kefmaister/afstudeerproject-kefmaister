@@ -10,52 +10,63 @@ class ProposalController extends Controller
 {
     public function show(Request $request)
     {
-        // Get the logged-in student’s proposal (if it exists)
-        $proposal = Proposal::with('stage.company')->where('student_id', auth()->id())->first();
-
-        // If the proposal doesn't exist, create a new empty proposal
-        if (!$proposal) {
-            $proposal = new Proposal();
+        // Ensure you fetch the student record related to the logged-in user.
+        $student = auth()->user()->student;
+        if (!$student) {
+            abort(404, 'Student record not found.');
         }
 
-        return view('student.proposal', [
-            'proposal' => $proposal,
-        ]);
+        $proposal = Proposal::with('stage.company', 'coordinator')
+            ->where('student_id', $student->id)
+            ->first();
+
+        if (!$proposal) {
+            $proposal = Proposal::create([
+                'student_id' => $student->id,
+                'status'     => 'draft',
+            ]);
+        }
+
+        return view('student.proposal', ['proposal' => $proposal]);
     }
 
     public function create(Request $request)
-    {
-        $stageId = $request->input('stage_id');
-        $stage = Stage::with('company')->findOrFail($stageId);
+{
+    $stageId = $request->input('stage_id');
+    // Eager load both company and studyfield
+    $stage = Stage::with(['company', 'studyfield'])->findOrFail($stageId);
 
-        // Get the logged-in student
-        $studentId = auth()->id();
+    // Get the logged-in student
+    $studentId = auth()->id();
 
-        // Get the coordinator_id from the stage's study field
-        $coordinatorId = $stage->studyfield->coordinator_id;
+    // Get the coordinator_id from the stage's study field
+    $coordinatorId = $stage->studyfield->coordinator_id;
 
-        // Create a new proposal with the company information filled in based on the selected stage
-        $proposal = Proposal::firstOrNew([
-            'student_id' => $studentId,
-            'stage_id' => $stageId,
+    // Create a new proposal with the company information filled in based on the selected stage
+    $proposal = Proposal::firstOrNew([
+        'student_id' => $studentId,
+        'stage_id'  => $stageId,
+    ]);
+
+    if (!$proposal->exists) {
+        $proposal->fill([
+            'status'         => 'draft',
+            'coordinator_id' => $coordinatorId,
+            'tasks'          => '', // default empty tasks
+            'motivation'     => '', // default empty motivation
+            'status'         => 'draft',
         ]);
-
-        if (!$proposal->exists) {
-            $proposal->fill([
-                'status' => 'draft',
-                'coordinator_id' => $coordinatorId,
-            ]);
+        $proposal->save();
+    } else {
+        // Ensure the status is set to draft if not already set to pending, approved, or denied
+        if (!in_array($proposal->status, ['pending', 'approved', 'denied'])) {
+            $proposal->status = 'draft';
             $proposal->save();
-        } else {
-            // Ensure the status is set to draft if not already set to pending, approved, or denied
-            if (!in_array($proposal->status, ['pending', 'approved', 'denied'])) {
-                $proposal->status = 'draft';
-                $proposal->save();
-            }
         }
-
-        return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
     }
+
+    return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
+}
 
     public function store(Request $request)
     {
@@ -84,6 +95,7 @@ class ProposalController extends Controller
         if (!$proposal->exists) {
             $proposal->status = 'draft';
         }
+        $proposal->status = 'pending';
 
         // Save the proposal
         $proposal->save();

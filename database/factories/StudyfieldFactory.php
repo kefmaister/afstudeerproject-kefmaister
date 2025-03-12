@@ -14,4 +14,15 @@ class StudyfieldFactory extends Factory
         return [
             'name'        => $this->faker->word,        ];
     }
+
+    public function forCoordinator($coordinator)
+{
+    return $this->state(function () use ($coordinator) {
+        return [
+            'coordinator_id' => is_numeric($coordinator) ? $coordinator : $coordinator->id,
+        ];
+    });
+}
+
+    
 }

@@ -13,13 +13,13 @@ class Studyfield extends Model
 
     protected $fillable = [
         'name',
-        // Add other studyfield columns as needed
+        'coordinator_id',
     ];
 
     // A studyfield has one coordinator.
     public function coordinator()
     {
-        return $this->hasOne(Coordinator::class, 'studyfield_id');
+        return $this->belongsTo(Coordinator::class, 'coordinator_id');
     }
 
     // A studyfield can have many students.

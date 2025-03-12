@@ -78,7 +78,7 @@
             <div>
                 <label for="stage_mentor" class="block font-semibold mb-1">Naam stagementor</label>
                 <input type="text" name="stage_mentor" id="stage_mentor" placeholder="Placeholder"
-                    value="{{ old('stage_mentor', $proposal->stage_mentor ?? '') }}"
+                    value="{{ old('stage_mentor', ($proposal->stage->company->mentor->firstname ?? '') . ' ' . ($proposal->stage->company->mentor->lastname ?? '')) }}"
                     class="w-full border-gray-300 rounded p-2" />
                 @error('stage_mentor')
                     <div class="text-red-600">{{ $message }}</div>
@@ -89,9 +89,20 @@
             <div>
                 <label for="stage_mentor_email" class="block font-semibold mb-1">E-mail stagementor</label>
                 <input type="email" name="stage_mentor_email" id="stage_mentor_email" placeholder="Placeholder"
-                    value="{{ old('stage_mentor_email', $proposal->stage_mentor_email ?? '') }}"
+                    value="{{ old('stage_mentor_email', $proposal->stage->company->mentor->email ?? '') }}"
                     class="w-full border-gray-300 rounded p-2" />
                 @error('stage_mentor_email')
+                    <div class="text-red-600">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- New row: Telefoonnummer stagementor -->
+            <div>
+                <label for="stage_mentor_phone" class="block font-semibold mb-1">Telefoonnummer stagementor</label>
+                <input type="text" name="stage_mentor_phone" id="stage_mentor_phone" placeholder="Placeholder"
+                    value="{{ old('stage_mentor_phone', $proposal->stage->company->mentor->phone ?? '') }}"
+                    class="w-full border-gray-300 rounded p-2" />
+                @error('stage_mentor_phone')
                     <div class="text-red-600">{{ $message }}</div>
                 @enderror
             </div>
