@@ -20,6 +20,6 @@ class Cv extends Model
     // A CV belongs to one student.
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(Student::class);
     }
 }

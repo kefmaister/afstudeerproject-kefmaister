@@ -21,6 +21,6 @@ class Mentor extends Model
     // A mentor is bound to one company.
     public function company()
     {
-        return $this->hasOne(Company::class, 'mentor_id');
+        return $this->hasOne(Company::class);
     }
 }

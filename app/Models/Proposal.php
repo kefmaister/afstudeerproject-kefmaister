@@ -24,18 +24,18 @@ class Proposal extends Model
     // A proposal is linked to one student (the student that filled it out).
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(Student::class);
     }
 
     // A proposal is reviewed by a coordinator.
     public function coordinator()
     {
-        return $this->belongsTo(Coordinator::class, 'coordinator_id');
+        return $this->belongsTo(Coordinator::class);
     }
 
     // A proposal is associated with one stage (internship).
     public function stage()
     {
-        return $this->belongsTo(Stage::class, 'stage_id');
+        return $this->belongsTo(Stage::class);
     }
 }

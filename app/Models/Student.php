@@ -16,30 +16,29 @@ class Student extends Model
         'class',
         'studyfield_id',
         'year',
-        'cv_id',
     ];
 
     // A student belongs to one studyfield.
     public function studyfield()
     {
-        return $this->belongsTo(Studyfield::class, 'studyfield_id');
+        return $this->belongsTo(Studyfield::class);
     }
 
     public function proposal()
 {
-    return $this->hasOne(Proposal::class, 'student_id');
+    return $this->hasOne(Proposal::class);
 }
 
 
     // A student belongs to one CV, since cv_id is stored on the student.
     public function cv()
     {
-        return $this->belongsTo(Cv::class, 'cv_id');
+        return $this->hasOne(Cv::class);
     }
 
     // A student belongs to a user.
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

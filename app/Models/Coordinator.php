@@ -18,18 +18,18 @@ class Coordinator extends Model
     // A coordinator belongs to one studyfield.
     public function studyfields()
     {
-        return $this->hasMany(Studyfield::class, 'coordinator_id');
+        return $this->hasMany(Studyfield::class);
     }
 
     // A coordinator can review many proposals.
     public function proposals()
     {
-        return $this->hasMany(Proposal::class, 'coordinator_id');
+        return $this->hasMany(Proposal::class);
     }
 
     // A coordinator belongs to a user.
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

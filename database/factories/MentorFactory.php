@@ -16,6 +16,8 @@ class MentorFactory extends Factory
             'lastname'   => $this->faker->lastname,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
+            'company_id' => $this->faker->numberBetween(1, 5),
+
         ];
     }
 }

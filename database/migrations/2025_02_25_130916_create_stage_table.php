@@ -20,10 +20,6 @@ return new class extends Migration
                 column: 'id',
             );
             $table->boolean('active');
-            $table->foreignId('logo_id')->constrained(
-                table: 'logo',
-                column: 'id',
-            );
             $table->text('title');
             $table->text('tasks');
             // Removed student_id since a stage can be used in multiple proposals
