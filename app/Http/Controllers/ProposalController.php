@@ -10,17 +10,24 @@ class ProposalController extends Controller
 {
     public function show(Request $request)
     {
-        // Get the logged-in student’s proposal (if it exists)
-        $proposal = Proposal::with('stage.company')->where('student_id', auth()->id())->first();
-
-        // If the proposal doesn't exist, create a new empty proposal
-        if (!$proposal) {
-            $proposal = new Proposal();
+        // Ensure you fetch the student record related to the logged-in user.
+        $student = auth()->user()->student;
+        if (!$student) {
+            abort(404, 'Student record not found.');
         }
 
-        return view('student.proposal', [
-            'proposal' => $proposal,
-        ]);
+        $proposal = Proposal::with('stage.company', 'coordinator')
+            ->where('student_id', $student->id)
+            ->first();
+
+        if (!$proposal) {
+            $proposal = Proposal::create([
+                'student_id' => $student->id,
+                'status'     => 'draft',
+            ]);
+        }
+
+        return view('student.proposal', ['proposal' => $proposal]);
     }
 
     public function create(Request $request)
