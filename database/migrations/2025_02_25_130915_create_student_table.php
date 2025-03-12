@@ -25,10 +25,6 @@ return new class extends Migration
                 column: 'id',
             );
             $table->integer('year');
-            $table->foreignId('cv_id')->nullable()->constrained(
-                table: 'cv',
-                column: 'id',
-            );
             $table->timestamps();
         });
 

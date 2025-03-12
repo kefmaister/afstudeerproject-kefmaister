@@ -53,26 +53,22 @@ class DatabaseSeeder extends Seeder
         
         // Create additional users
         User::factory(10)->create();
-        Mentor::factory(5)->create();
-        Logo::factory(5)->create();
-
         // Create a coordinator record for the coordinator user.
         // This record is needed so that studyfields can reference a valid coordinator.
         $coordinator = Coordinator::factory()->create([
             'user_id' => $coordinatorUser->id,
         ]);
-
+        
         // Seed studyfields using the forCoordinator state so that each studyfield gets a valid coordinator_id.
         $studyfields = Studyfield::factory(3)
-            ->forCoordinator($coordinator)
-            ->create();
-
+        ->forCoordinator($coordinator)
+        ->create();
+        
         // Create additional records for other models.
         Cv::factory(10)->create();
-        Proposal::factory(7)->create();
         Company::factory(5)->create();
+        Mentor::factory(5)->create();
         Stage::factory(8)->create();
-
         // Loop through all users with role 'student' and create corresponding student records if they don't already exist.
         $studentUsers = User::where('role', 'student')->get();
         foreach ($studentUsers as $user) {
@@ -83,7 +79,6 @@ class DatabaseSeeder extends Seeder
                     'studyfield_id' => $studyfields->random()->id,
                     'class'         => 'A', // Default class
                     'year'          => now()->year,
-                    'cv_id'         => null,
                 ]);
             } else {
                 $student = $user->student;

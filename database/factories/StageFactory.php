@@ -17,7 +17,6 @@ class StageFactory extends Factory
         return [
             'company_id'    => Company::factory(),
             'active'        => $this->faker->boolean,
-            'logo_id'       => Logo::factory(),
             'title'         => $this->faker->sentence,
             'tasks'         => $this->faker->paragraph,
             'studyfield_id' => Studyfield::factory()

@@ -21,31 +21,24 @@ class Company extends Model
         'accepted',
         'max_students',
         'student_amount',
-        'logo_id',
+        'logo',
         'user_id',
     ];
 
     // A company has a mentor.
     public function mentor()
     {
-        return $this->belongsTo(Mentor::class, 'mentor_id');
+        return $this->belongsTo(Mentor::class);
     }
-
-    // A company may have a logo (this is optional).
-    public function logo()
-    {
-        return $this->belongsTo(Logo::class, 'logo_id');
-    }
-
     // A company can create many stages (internships) across different studyfields.
     public function stages()
     {
-        return $this->hasMany(Stage::class, 'company_id');
+        return $this->hasMany(Stage::class);
     }
 
     // A company belongs to a user.
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

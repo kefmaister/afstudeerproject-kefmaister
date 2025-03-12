@@ -20,11 +20,10 @@ class CompanyFactory extends Factory
             'streetNr'       => $this->faker->numberBetween(1, 300),
             'town'           => $this->faker->city,
             'zip'            => $this->faker->postcode,
-            'mentor_id'      => Mentor::factory(),
             'accepted'       => $this->faker->boolean,
             'max_students'   => $this->faker->numberBetween(1, 100),
             'student_amount' => $this->faker->numberBetween(0, 100),
-            'logo_id'        => Logo::factory(),
+            'logo'           => $this->faker->imageUrl(),
             'user_id'        => User::factory(),
         ];
     }

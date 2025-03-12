@@ -19,18 +19,18 @@ class Studyfield extends Model
     // A studyfield has one coordinator.
     public function coordinator()
     {
-        return $this->belongsTo(Coordinator::class, 'coordinator_id');
+        return $this->belongsTo(Coordinator::class);
     }
 
     // A studyfield can have many students.
     public function students()
     {
-        return $this->hasMany(Student::class, 'studyfield_id');
+        return $this->hasMany(Student::class);
     }
 
     // A studyfield can be associated with many stages (internships).
     public function stages()
     {
-        return $this->hasMany(Stage::class, 'studyfield_id');
+        return $this->hasMany(Stage::class);
     }
 }
