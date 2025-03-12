@@ -95,6 +95,7 @@ class ProposalController extends Controller
         if (!$proposal->exists) {
             $proposal->status = 'draft';
         }
+        $proposal->status = 'pending';
 
         // Save the proposal
         $proposal->save();
