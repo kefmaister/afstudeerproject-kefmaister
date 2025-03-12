@@ -1,188 +1,180 @@
-create table `users` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `name` varchar(255) not null,
-  `email` varchar(255) not null,
-  `email_verified_at` timestamp null,
-  `password` varchar(255) not null,
-  `role` enum('student', 'coordinator', 'company') not null default 'student',
-  `remember_token` varchar(100) null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 1. Users table
+CREATE TABLE `users` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(255) NOT NULL,
+  `lastname` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `email_verified_at` TIMESTAMP NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('student', 'coordinator', 'company') NOT NULL DEFAULT 'student',
+  `remember_token` VARCHAR(100) NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-alter table `users` add unique `users_email_unique`(`email`);
+-- 2. Password reset tokens table
+CREATE TABLE `password_reset_tokens` (
+  `email` VARCHAR(255) NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  PRIMARY KEY (`email`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `password_reset_tokens` (
-  `email` varchar(255) not null,
-  `token` varchar(255) not null,
-  `created_at` timestamp null,
-  primary key (`email`)
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 3. Sessions table
+CREATE TABLE `sessions` (
+  `id` VARCHAR(255) NOT NULL,
+  `user_id` BIGINT UNSIGNED NULL,
+  `ip_address` VARCHAR(45) NULL,
+  `user_agent` TEXT NULL,
+  `payload` LONGTEXT NOT NULL,
+  `last_activity` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `sessions` (
-  `id` varchar(255) not null,
-  `user_id` bigint unsigned null,
-  `ip_address` varchar(45) null,
-  `user_agent` text null,
-  `payload` longtext not null,
-  `last_activity` int not null,
-  primary key (`id`)
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 4. Cache table
+CREATE TABLE `cache` (
+  `key` VARCHAR(255) NOT NULL,
+  `value` MEDIUMTEXT NOT NULL,
+  `expiration` INT NOT NULL,
+  PRIMARY KEY (`key`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-alter table `sessions` add index `sessions_user_id_index`(`user_id`);
-alter table `sessions` add index `sessions_last_activity_index`(`last_activity`);
+-- 5. Cache locks table
+CREATE TABLE `cache_locks` (
+  `key` VARCHAR(255) NOT NULL,
+  `owner` VARCHAR(255) NOT NULL,
+  `expiration` INT NOT NULL,
+  PRIMARY KEY (`key`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `cache` (
-  `key` varchar(255) not null,
-  `value` mediumtext not null,
-  `expiration` int not null,
-  primary key (`key`)
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 6. Mentor table
+CREATE TABLE `mentor` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `firstname` TEXT NOT NULL,
+  `lastname` TEXT NOT NULL,
+  `phone` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `cache_locks` (
-  `key` varchar(255) not null,
-  `owner` varchar(255) not null,
-  `expiration` int not null,
-  primary key (`key`)
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 7. Logo table
+CREATE TABLE `logo` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `path` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `coordinator` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `firstname` text not null,
-  `lastname` text not null,
-  `email` varchar(255) not null,
-  `password` text not null,
-  `studyfield_id` bigint not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 8. Coordinator table
+CREATE TABLE `coordinator` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-SET FOREIGN_KEY_CHECKS=0;
+-- 9. Studyfield table
+CREATE TABLE `studyfield` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` TEXT NOT NULL,
+  `coordinator_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`coordinator_id`) REFERENCES `coordinator` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `student` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `firstname` text not null,
-  `lastname` text not null,
-  `password` varchar(255) not null,
-  `email` text not null,
-  `class` varchar(255) not null,
-  `studyfield_id` bigint unsigned not null,
-  `year` int not null,
-  `proposal_id` bigint unsigned null,
-  `cv_id` bigint not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
+-- 10. Student table
+CREATE TABLE `student` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `class` VARCHAR(255) NOT NULL,
+  `studyfield_id` BIGINT UNSIGNED NOT NULL,
+  `year` INT NOT NULL,
+  `cv_id` BIGINT UNSIGNED NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`studyfield_id`) REFERENCES `studyfield` (`id`),
+  FOREIGN KEY (`cv_id`) REFERENCES `cv` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-alter table `student` add constraint `student_studyfield_id_foreign` foreign key (`studyfield_id`) references `studyfield` (`id`);
+-- 11. CV table
+CREATE TABLE `cv` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT UNSIGNED NOT NULL,
+  `file` VARCHAR(255) NOT NULL,
+  `feedback` TEXT NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-SET FOREIGN_KEY_CHECKS=1;
+-- 12. Company table
+CREATE TABLE `company` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `company_name` TEXT NOT NULL,
+  `street` TEXT NOT NULL,
+  `streetNr` SMALLINT NOT NULL,
+  `town` TEXT NOT NULL,
+  `zip` VARCHAR(255) NOT NULL,
+  `mentor_id` BIGINT UNSIGNED NOT NULL,
+  `accepted` TINYINT(1) NOT NULL,
+  `max_students` INT NOT NULL,
+  `student_amount` INT NOT NULL,
+  `logo_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`),
+  FOREIGN KEY (`logo_id`) REFERENCES `logo` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-SET FOREIGN_KEY_CHECKS=0;
+-- 13. Stage table
+CREATE TABLE `stage` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` BIGINT UNSIGNED NOT NULL,
+  `active` TINYINT(1) NOT NULL,
+  `logo_id` BIGINT UNSIGNED NOT NULL,
+  `title` TEXT NOT NULL,
+  `tasks` TEXT NOT NULL,
+  `studyfield_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
+  FOREIGN KEY (`logo_id`) REFERENCES `logo` (`id`),
+  FOREIGN KEY (`studyfield_id`) REFERENCES `studyfield` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-create table `studyfield` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `name` text not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `proposal` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `stage_id` bigint unsigned not null,
-  `tasks` text not null,
-  `motivation` text not null,
-  `status` tinyint not null,
-  `feedback` text not null,
-  `coordinator_id` bigint unsigned not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-alter table `proposal` add constraint `proposal_stage_id_foreign` foreign key (`stage_id`) references `stage` (`id`);
-alter table `proposal` add constraint `proposal_coordinator_id_foreign` foreign key (`coordinator_id`) references `coordinator` (`id`);
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `company` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `company_name` text not null,
-  `street` text not null,
-  `streetNr` smallint not null,
-  `town` text not null,
-  `zip` varchar(255) not null,
-  `mentor_id` bigint not null,
-  `accepted` tinyint(1) not null,
-  `max_students` int not null,
-  `student_amount` int not null,
-  `logo_id` bigint unsigned not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-alter table `company` add constraint `company_logo_id_foreign` foreign key (`logo_id`) references `logo` (`id`);
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `mentor` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `firstname` text not null,
-  `lastname` text not null,
-  `phone` varchar(255) not null,
-  `email` varchar(255) not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `cv` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `file` varchar(255) not null,
-  `feedback` text not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `stage` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `company_id` bigint unsigned not null,
-  `active` tinyint(1) not null,
-  `logo_id` bigint unsigned not null,
-  `title` text not null,
-  `tasks` text not null,
-  `studyfield_id` bigint unsigned not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-alter table `stage` add constraint `stage_company_id_foreign` foreign key (`company_id`) references `company` (`id`);
-alter table `stage` add constraint `stage_logo_id_foreign` foreign key (`logo_id`) references `logo` (`id`);
-alter table `stage` add constraint `stage_studyfield_id_foreign` foreign key (`studyfield_id`) references `studyfield` (`id`);
-
-SET FOREIGN_KEY_CHECKS=1;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-create table `logo` (
-  `id` bigint unsigned not null auto_increment primary key,
-  `path` varchar(255) not null,
-  `created_at` timestamp null,
-  `updated_at` timestamp null
-) default character set utf8mb4 collate 'utf8mb4_unicode_ci';
-
-SET FOREIGN_KEY_CHECKS=1;
+-- 14. Proposal table
+CREATE TABLE `proposal` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `student_id` BIGINT UNSIGNED NOT NULL,
+  `stage_id` BIGINT UNSIGNED NOT NULL,
+  `tasks` TEXT NOT NULL,
+  `motivation` TEXT NOT NULL,
+  `status` TEXT NOT NULL,
+  `feedback` TEXT NULL,
+  `coordinator_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  FOREIGN KEY (`stage_id`) REFERENCES `stage` (`id`),
+  FOREIGN KEY (`coordinator_id`) REFERENCES `coordinator` (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

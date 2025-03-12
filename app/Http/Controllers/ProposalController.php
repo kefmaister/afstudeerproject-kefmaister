@@ -47,6 +47,7 @@ class ProposalController extends Controller
             'coordinator_id' => $coordinatorId,
             'tasks'          => '', // default empty tasks
             'motivation'     => '', // default empty motivation
+            'status'         => 'draft',
         ]);
         $proposal->save();
     } else {

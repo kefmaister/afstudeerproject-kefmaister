@@ -20,7 +20,10 @@ class StageFactory extends Factory
             'logo_id'       => Logo::factory(),
             'title'         => $this->faker->sentence,
             'tasks'         => $this->faker->paragraph,
-            'studyfield_id' => Studyfield::factory(),
+            'studyfield_id' => Studyfield::factory()
+                ->forCoordinator(\App\Models\Coordinator::factory()->create())
+                ->create()
+                ->id,
         ];
     }
 }

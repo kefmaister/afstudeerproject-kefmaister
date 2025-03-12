@@ -20,11 +20,6 @@ return new class extends Migration
                 table: 'users',
                 column: 'id',
             );
-            $table->foreignId('studyfield_id')->constrained(
-                table: 'studyfield',
-                column: 'id',
-            );
-
             $table->timestamps();
         });
 
