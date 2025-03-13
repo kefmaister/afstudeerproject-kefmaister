@@ -16,29 +16,36 @@
         <ul class="divide-y divide-gray-200 max-h-48 overflow-y-auto">
             @foreach ($students as $s)
                 @php
-                    $color = 'text-gray-500'; // Default color for N/A
+                    $icon = '';
                     if ($s->proposal) {
                         switch ($s->proposal->status) {
-                            case 'draft':
-                                $color = 'text-blue-500';
-                                break;
                             case 'pending':
-                                $color = 'text-yellow-500';
+                                // Clock icon for pending
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+                                         </svg>';
                                 break;
                             case 'approved':
-                                $color = 'text-green-500';
+                                // Checkmark icon for approved
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-500 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                     </svg>';
                                 break;
                             case 'denied':
-                                $color = 'text-red-500';
+                                // Cross icon for denied
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                     </svg>';
                                 break;
+                            // If it's draft, no icon
                         }
                     }
                 @endphp
                 <li
                     x-show="search === '' || '{{ strtolower($s->user->firstname . ' ' . $s->user->lastname) }}'.includes(search.toLowerCase())">
                     <a href="{{ route('coordinator.student.proposal', $s->id) }}"
-                        class="block px-4 py-2 hover:bg-gray-100 {{ $color }}">
-                        {{ $s->user->firstname . ' ' . $s->user->lastname }}
+                        class="block px-4 py-2 hover:bg-gray-100">
+                        {{ $s->user->firstname . ' ' . $s->user->lastname }} {!! $icon !!}
                     </a>
                 </li>
             @endforeach
