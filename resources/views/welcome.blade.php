@@ -75,7 +75,8 @@
                         <!-- Hoofdwebsite -->
                         <h2 class="text-xl font-semibold mb-2">Hoofdwebsite</h2>
                         <p class="mb-6">
-                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline" target="_blank">
+                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline"
+                                target="_blank">
                                 Arteveldehogeschool
                             </a>
                         </p>
@@ -100,42 +101,37 @@
                         </p>
 
                         <!-- Recente bedrijven -->
-                        <h2 class="text-xl font-semibold mb-2">Recente bedrijven</h2>
-                        <div class="space-y-2">
-                            <div class="bg-white p-4 shadow rounded">
-                                Nieuwe Stage bedrijf
-                            </div>
-                            <div class="bg-white p-4 shadow rounded">
-                                Nieuwe Stage bedrijf
-                            </div>
-                            <div class="bg-white p-4 shadow rounded">
-                                Nieuwe Stage bedrijf
+                        <div>
+                            <h2 class="text-xl font-semibold mb-2">Recente bedrijven</h2>
+                            <div class="space-y-2">
+                                @foreach ($recentCompanies as $company)
+                                    <div class="bg-white p-4 shadow rounded">
+                                        <h3 class="font-semibold text-lg">{{ $company->company_name }}</h3>
+                                        <p class="text-sm text-gray-600">
+                                            {{ $company->town ?? '' }}
+                                        </p>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
 
                     <!-- Right Column -->
+                    <!-- Display Coordinators -->
                     <div>
                         <h2 class="text-xl font-semibold mb-4">De coördinators</h2>
-
-                        <!-- Coordinator Card Example 1 -->
-                        <div class="bg-white p-4 shadow rounded mb-4">
-                            <div class="font-semibold">Inge De Canck</div>
-                            <div class="text-sm text-gray-600">
-                                inge.decanck@arteveldehs.be
+                        @foreach ($coordinators as $coordinator)
+                            <div class="bg-white p-4 shadow rounded mb-4">
+                                <div class="font-semibold">
+                                    {{ $coordinator->user->firstname }} {{ $coordinator->user->lastname }}
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    {{ $coordinator->user->email }}
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Coordinator Card Example 2 -->
-                        <div class="bg-white p-4 shadow rounded mb-4">
-                            <div class="font-semibold">Voorbeeld Coördinator</div>
-                            <div class="text-sm text-gray-600">
-                                coordinator@arteveldehs.be
-                            </div>
-                        </div>
-
-                        <!-- Add more coordinators as needed -->
+                        @endforeach
                     </div>
+
                 </div>
             </div>
         </main>

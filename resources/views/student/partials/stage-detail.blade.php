@@ -1,8 +1,8 @@
 @if ($selectedStage)
     <div class="bg-white p-4 rounded shadow">
         <div class="flex items-center mb-4">
-            @if ($selectedStage->logo && $selectedStage->logo->path)
-                <img src="{{ $selectedStage->logo->path }}" alt="Stage Logo" class="h-16 w-16 object-cover mr-4">
+            @if ($selectedStage->company->logo)
+                <img src="{{ $selectedStage->company->logo }}" alt="Stage Logo" class="h-16 w-16 object-cover mr-4">
             @endif
             <div>
                 <h2 class="text-xl font-bold">{{ $selectedStage->title }}</h2>
