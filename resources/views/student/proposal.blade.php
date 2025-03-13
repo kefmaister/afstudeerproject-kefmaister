@@ -8,7 +8,8 @@
             <div class="text-xl font-semibold {{ $proposal->status === 'pending' ? 'text-gray-800' : 'text-gray-400' }}">
                 – 2) Pending –
             </div>
-            <div class="text-xl font-semibold {{ in_array($proposal->status, ['approved', 'denied']) ? 'text-gray-800' : 'text-gray-400' }}">
+            <div
+                class="text-xl font-semibold {{ in_array($proposal->status, ['approved', 'denied']) ? 'text-gray-800' : 'text-gray-400' }}">
                 – 3) Conclusie
             </div>
         </div>
@@ -36,8 +37,9 @@
 
             <!-- Coordinator Info -->
             <h3 class="mt-4 font-semibold">Informatie</h3>
-            <p>Coördinator: {{ $proposal->coordinator->name ?? 'N/A' }}</p>
-            <p>Contact: {{ $proposal->coordinator->email ?? 'N/A' }}</p>
+            <p>Coördinator: {{ $proposal->coordinator->user->firstname ?? 'N/A' }}
+                {{ $proposal->coordinator->user->lastname ?? '' }}</p>
+            <p>Contact: {{ $proposal->coordinator->user->email ?? 'N/A' }}</p>
         </div>
     @elseif($status === 'approved')
         <!-- Approved: final view + instructions -->
@@ -58,7 +60,7 @@
             </ol>
         </div>
     @elseif($status === 'denied')
-    <!-- if status denied add button to change proposal and resubmit and set the status to pending again. -->
+        <!-- if status denied add button to change proposal and resubmit and set the status to pending again. -->
         <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
             <h2 class="text-lg font-semibold text-red-600 mb-2">Afgekeurd</h2>
 
@@ -74,6 +76,5 @@
                 <li>Verstuur opnieuw</li>
             </ol>
         </div>
-
     @endif
 </x-app>

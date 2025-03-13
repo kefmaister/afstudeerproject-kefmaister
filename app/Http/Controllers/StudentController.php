@@ -19,7 +19,7 @@ class StudentController extends Controller
         $land = $request->input('land');
 
         // 2. Build the query for stages
-        $query = Stage::query()->with('company', 'logo');
+        $query = Stage::query()->with('company');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -72,7 +72,7 @@ class StudentController extends Controller
         $selectedStageId = $request->input('selectedStage');
         $selectedStage = null;
         if ($selectedStageId) {
-            $selectedStage = Stage::with('company', 'logo')->find($selectedStageId);
+            $selectedStage = Stage::with('company')->find($selectedStageId);
         }
 
         // 6. Return the view

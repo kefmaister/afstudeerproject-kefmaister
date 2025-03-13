@@ -2,8 +2,8 @@
     @foreach ($stages as $stage)
         <div class="bg-white p-4 rounded shadow flex flex-col justify-between">
             <div>
-                @if ($stage->logo && $stage->logo->path)
-                    <img src="{{ $stage->logo->path }}" alt="Stage Logo" class="h-12 w-12 object-cover mb-2">
+                @if ($stage->company->logo)
+                    <img src="{{ $stage->company->logo }}" alt="Stage Logo" class="h-12 w-12 object-cover mb-2">
                 @endif
                 <h3 class="font-semibold text-lg">{{ $stage->title }}</h3>
                 <p class="text-sm text-gray-600 mt-2 line-clamp-2">

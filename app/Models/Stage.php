@@ -26,12 +26,6 @@ class Stage extends Model
         return $this->belongsTo(Company::class);
     }
 
-    // A stage uses a logo for display.
-    public function logo()
-    {
-        return $this->belongsTo(Logo::class);
-    }
-
     // A stage is designated for a specific studyfield.
     public function studyfield()
     {
