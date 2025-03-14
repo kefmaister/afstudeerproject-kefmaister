@@ -7,6 +7,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CoordinatorProposalController;
+use App\Http\Controllers\CoordinatorInboxController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
@@ -32,6 +33,19 @@ Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(
     Route::get('/student/{student}/proposal', [CoordinatorController::class, 'showStudentProposal'])->name('student.proposal');
     Route::put('/proposal/{proposal}', [CoordinatorController::class, 'updateProposal'])->name('proposal.update');
     Route::post('/cv/{cv}/feedback', [CoordinatorController::class, 'giveCvFeedback'])->name('cv.feedback');
+
+    // Updated inbox routes for companies and stages
+    Route::prefix('inbox')->name('inbox.')->group(function () {
+        Route::get('/', [CoordinatorInboxController::class, 'index'])->name('index');        // Companies inbox routes
+        Route::get('/companies', [CoordinatorInboxController::class, 'indexCompanies'])->name('companies');
+        Route::put('/companies/{company}/approve', [CoordinatorInboxController::class, 'approveCompany'])->name('approve.company');
+        Route::put('/companies/{company}/deny', [CoordinatorInboxController::class, 'denyCompany'])->name('deny.company');
+
+        // Stages inbox routes
+        Route::get('/stages', [CoordinatorInboxController::class, 'indexStages'])->name('stages');
+        Route::put('/stages/{stage}/approve', [CoordinatorInboxController::class, 'approveStage'])->name('approve.stage');
+        Route::put('/stages/{stage}/deny', [CoordinatorInboxController::class, 'denyStage'])->name('deny.stage');
+    });
 });
 // Company Routes
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
