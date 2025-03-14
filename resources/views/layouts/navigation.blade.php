@@ -23,8 +23,12 @@
                             {{ __('Voorstel') }}
                         </x-nav-link>
                     @elseif (Auth::user()->role === 'coordinator')
-                        <x-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')" class="text-gray-900">
+                        <x-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home') ||
+                            request()->routeIs('coordinator.student.*')" class="text-gray-900">
                             {{ __('Coordinator Home') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
+                            {{ __('Inbox') }}
                         </x-nav-link>
                     @elseif (Auth::user()->role === 'company')
                         <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home')">
@@ -101,6 +105,10 @@
             @elseif (Auth::user()->role === 'coordinator')
                 <x-responsive-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')">
                     {{ __('Coordinator Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('coordinator.inbox.companies')"
+                    :active="request()->routeIs('coordinator.inbox.*')">
+                    {{ __('Inbox') }}
                 </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'company')
                 <x-responsive-nav-link :href="route('company.home')" :active="request()->routeIs('company.home')">
