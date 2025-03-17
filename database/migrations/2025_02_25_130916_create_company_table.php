@@ -28,6 +28,9 @@ return new class extends Migration
             $table->integer('max_students');
             $table->integer('student_amount');
             $table->text('logo');
+            $table->text('company_vat')->nullable();
+            $table->text('reason')->nullable();
+            $table->integer('employee_count')->nullable();
 
 
             $table->timestamps();

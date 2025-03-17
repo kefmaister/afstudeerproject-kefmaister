@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Stage;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\CompanyApprovalMail;
-use App\Mail\CompanyDenialMail;
+use App\Mail\CompanyApproved;
+use App\Mail\CompanyDenied;
 use App\Mail\StageApprovalMail;
 use App\Mail\StageDenialMail;
 
@@ -55,7 +55,7 @@ public function indexStages()
         $company->accepted = 1;
         $company->save();
 
-        Mail::to($company->user->email)->send(new CompanyApprovalMail($company->user));
+        Mail::to($company->user->email)->send(new CompanyApproved($company->user));
 
         return redirect()->back()->with('status', 'Company approved successfully!');
     }
@@ -65,13 +65,17 @@ public function indexStages()
         $request->validate([
             'reason' => 'required|string|max:255',
         ]);
-        $company->accepted = -1;
-        $company->save();
 
-        Mail::to($company->user->email)->send(new CompanyDenialMail($company->user, $request->input('reason')));
+        $company->update([
+            'accepted' => -1,
+            'reason' => $request->input('reason'),
+        ]);
+
+        Mail::to($company->user->email)->send(new CompanyDenied($company->user, $request->input('reason')));
 
         return redirect()->back()->with('status', 'Company denied successfully!');
     }
+
 
     public function approveStage(Request $request, Stage $stage)
     {

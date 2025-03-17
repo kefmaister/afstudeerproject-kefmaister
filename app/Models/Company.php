@@ -25,6 +25,7 @@ class Company extends Model
         'max_students',
         'student_amount',
         'company_vat',
+        'reason'
     ];
 
     // A company has a mentor.

@@ -14,7 +14,6 @@ class Stage extends Model
     protected $fillable = [
         'company_id',
         'active',
-        'logo_id',
         'title',
         'tasks',
         'studyfield_id',
