@@ -11,135 +11,152 @@ use Illuminate\Http\Request;
 class CoordinatorController extends Controller
 {
     public function index(Request $request)
-    {
-        // Only show students from the coordinator's own studyfields
-        // or show all if coordinator can see all. Adjust logic as needed:
-        // $allowedStudyfields = auth()->user()->studyfield ? [auth()->user()->studyfield->id] : [];
-        // For demonstration, we won't restrict. But in production, you might do so.
+{
+    // Get the coordinator's studyfields
+    $coordinator = auth()->user()->coordinator;
+    $allowedStudyfieldIds = $coordinator ? $coordinator->studyfields()->pluck('id')->toArray() : [];
 
-        $query = Student::query();
+    // If the coordinator has no studyfields, you might choose to return
+    // an empty collection or a message. For example:
+    if (empty($allowedStudyfieldIds)) {
+        $students = collect();
+        $studyfields = collect();
+        return view('coordinator.home', compact('students', 'studyfields'));
+    }
 
-        // 1) Search by student name
-        if ($search = $request->input('search')) {
-            $query->whereHas('user', function ($q) use ($search) {
+    $query = Student::query();
+
+    // Filter: Only include students in one of these studyfields.
+    // Make sure the column name ('studyfield_id') matches your DB
+    $query->whereIn('studyfield_id', $allowedStudyfieldIds);
+
+    // 1) Search by student name
+    if ($search = $request->input('search')) {
+        $query->whereHas('user', function ($q) use ($search) {
             $q->where(function ($query) use ($search) {
                 $query->where('firstname', 'like', "%{$search}%")
-                  ->orWhere('lastname', 'like', "%{$search}%");
+                      ->orWhere('lastname', 'like', "%{$search}%");
             });
-            });
-        }
-
-
-        // 2) Filter by studyfield
-        if ($studyfieldId = $request->input('studyfield')) {
-            $query->where('studyfield_id', $studyfieldId);
-        }
-
-        // 3) Filter by proposal status
-        if ($proposalStatus = $request->input('proposal_status')) {
-            // Assuming Student has a `proposal()` relationship
-            $query->whereHas('proposal', function ($q) use ($proposalStatus) {
-                $q->where('status', $proposalStatus);
-            });
-        }
-
-        // 4) Filter by contract status
-        if ($contractStatus = $request->input('contract_status')) {
-            $query->where('contract_status', $contractStatus);
-        }
-
-        // 5) Get paginated results
-        $students = $query->with(['proposal', 'studyfield'])->paginate(10);
-
-        // Provide the list of studyfields for the filter
-        $studyfields = Studyfield::all();
-
-        return view('coordinator.home', [
-            'students' => $students,
-            'studyfields' => $studyfields,
-        ]);
-    }
-
-    public function showStudent(Student $student)
-    {
-        // Load the student's CV
-        $cv = Cv::where('student_id', $student->id)->first();
-
-        // Load all students in an ordered collection
-        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
-
-        // Find the index of the current student in that collection
-        $currentIndex = $students->search(function ($s) use ($student) {
-            return $s->id === $student->id;
         });
-
-        // Compute prev and next
-        $prevStudentId = null;
-        $nextStudentId = null;
-
-        if ($currentIndex > 0) {
-            $prevStudentId = $students[$currentIndex - 1]->id;
-        }
-        if ($currentIndex < $students->count() - 1) {
-            $nextStudentId = $students[$currentIndex + 1]->id;
-        }
-
-        // Return the view
-        return view('coordinator.student-detail', [
-            'student' => $student,
-            'students' => $students,
-            'prevStudentId' => $prevStudentId,
-            'nextStudentId' => $nextStudentId,
-            'cv' => $cv,
-        ]);
     }
 
-    public function showStudentCv(Student $student)
-    {
-        $cv = Cv::where('student_id', $student->id)->first();
-        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
+    // 2) Additional filtering by studyfield if passed through form
+    if ($studyfieldId = $request->input('studyfield')) {
+        $query->where('studyfield_id', $studyfieldId);
+    }
 
-        // Find the index of the current student in that collection
-        $currentIndex = $students->search(function ($s) use ($student) {
-            return $s->id === $student->id;
+    // 3) Filter by proposal status
+    if ($proposalStatus = $request->input('proposal_status')) {
+        $query->whereHas('proposal', function ($q) use ($proposalStatus) {
+            $q->where('status', $proposalStatus);
         });
-
-        // Compute prev and next
-        $prevStudentId = null;
-        $nextStudentId = null;
-
-        if ($currentIndex > 0) {
-            $prevStudentId = $students[$currentIndex - 1]->id;
-        }
-        if ($currentIndex < $students->count() - 1) {
-            $nextStudentId = $students[$currentIndex + 1]->id;
-        }
-
-        return view('coordinator.partials.cv-page', compact('student', 'cv', 'students', 'prevStudentId', 'nextStudentId'));
     }
 
-    public function showStudentProposal(Student $student)
-    {
-        $students = Student::with(['proposal', 'user'])->orderBy('id', 'asc')->get();
-
-        // Find the index of the current student in that collection
-        $currentIndex = $students->search(function ($s) use ($student) {
-            return $s->id === $student->id;
-        });
-
-        // Compute prev and next
-        $prevStudentId = null;
-        $nextStudentId = null;
-
-        if ($currentIndex > 0) {
-            $prevStudentId = $students[$currentIndex - 1]->id;
-        }
-        if ($currentIndex < $students->count() - 1) {
-            $nextStudentId = $students[$currentIndex + 1]->id;
-        }
-
-        return view('coordinator.partials.proposal-page', compact('student', 'students', 'prevStudentId', 'nextStudentId'));
+    // 4) Filter by contract status
+    if ($contractStatus = $request->input('contract_status')) {
+        $query->where('contract_status', $contractStatus);
     }
+
+    // 5) Get paginated results
+    $students = $query->with(['proposal', 'studyfield'])->paginate(10);
+
+    // Provide the list of studyfields for the filter. Only show allowed ones.
+    $studyfields = Studyfield::whereIn('id', $allowedStudyfieldIds)->get();
+
+    return view('coordinator.home', [
+        'students' => $students,
+        'studyfields' => $studyfields,
+    ]);
+}
+
+public function showStudent(Student $student)
+{
+    // Get the coordinator's studyfields
+    $coordinator = auth()->user()->coordinator;
+    $allowedStudyfieldIds = $coordinator ? $coordinator->studyfields()->pluck('id')->toArray() : [];
+
+    // Ensure the student belongs to one of the coordinator's studyfields
+    if (!in_array($student->studyfield_id, $allowedStudyfieldIds)) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    // Load the student's CV
+    $cv = Cv::where('student_id', $student->id)->first();
+
+    // Load all students in the coordinator's studyfields
+    $students = Student::with(['proposal', 'user'])
+        ->whereIn('studyfield_id', $allowedStudyfieldIds)
+        ->orderBy('id', 'asc')
+        ->get();
+
+    // Compute previous and next student IDs
+    $studentIds = $students->pluck('id')->toArray();
+    $currentIndex = array_search($student->id, $studentIds);
+    $prevStudentId = $currentIndex > 0 ? $studentIds[$currentIndex - 1] : null;
+    $nextStudentId = $currentIndex < count($studentIds) - 1 ? $studentIds[$currentIndex + 1] : null;
+
+    return view('coordinator.student-detail', [
+        'student' => $student,
+        'students' => $students,
+        'prevStudentId' => $prevStudentId,
+        'nextStudentId' => $nextStudentId,
+        'cv' => $cv,
+    ]);
+}
+
+
+public function showStudentCv(Student $student)
+{
+    // Get the coordinator's studyfields
+    $coordinator = auth()->user()->coordinator;
+    $allowedStudyfieldIds = $coordinator ? $coordinator->studyfields()->pluck('id')->toArray() : [];
+
+    // Ensure the student belongs to the allowed studyfields
+    if (!in_array($student->studyfield_id, $allowedStudyfieldIds)) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $cv = Cv::where('student_id', $student->id)->first();
+
+    // Also load students filtered by allowed studyfields
+    $students = Student::with(['proposal', 'user'])
+        ->whereIn('studyfield_id', $allowedStudyfieldIds)
+        ->orderBy('id', 'asc')
+        ->get();
+
+    // Compute previous and next student IDs
+    $studentIds = $students->pluck('id')->toArray();
+    $currentIndex = array_search($student->id, $studentIds);
+    $prevStudentId = $currentIndex > 0 ? $studentIds[$currentIndex - 1] : null;
+    $nextStudentId = $currentIndex < count($studentIds) - 1 ? $studentIds[$currentIndex + 1] : null;
+
+    return view('coordinator.partials.cv-page', compact('student', 'cv', 'students', 'prevStudentId', 'nextStudentId'));
+}
+
+public function showStudentProposal(Student $student)
+{
+    // Get the coordinator's studyfields
+    $coordinator = auth()->user()->coordinator;
+    $allowedStudyfieldIds = $coordinator ? $coordinator->studyfields()->pluck('id')->toArray() : [];
+
+    // Ensure the student belongs to the allowed studyfields
+    if (!in_array($student->studyfield_id, $allowedStudyfieldIds)) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $students = Student::with(['proposal', 'user'])
+        ->whereIn('studyfield_id', $allowedStudyfieldIds)
+        ->orderBy('id', 'asc')
+        ->get();
+
+    // Compute prev and next student IDs
+    $studentIds = $students->pluck('id')->toArray();
+    $currentIndex = array_search($student->id, $studentIds);
+    $prevStudentId = $currentIndex > 0 ? $studentIds[$currentIndex - 1] : null;
+    $nextStudentId = $currentIndex < count($studentIds) - 1 ? $studentIds[$currentIndex + 1] : null;
+
+    return view('coordinator.partials.proposal-page', compact('student', 'students', 'prevStudentId', 'nextStudentId'));
+}
 
     public function updateProposal(Request $request, Proposal $proposal)
     {

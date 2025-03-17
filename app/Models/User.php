@@ -56,4 +56,8 @@ public function student()
 {
     return $this->hasOne(Student::class);
 }
+public function coordinator()
+{
+    return $this->hasOne(Coordinator::class);
+}
 }
