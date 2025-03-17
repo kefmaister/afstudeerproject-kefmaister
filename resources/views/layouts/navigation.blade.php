@@ -31,7 +31,7 @@
                             {{ __('Inbox') }}
                         </x-nav-link>
                     @elseif (Auth::user()->role === 'company')
-                        <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home')">
+                        <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home') || request()->routeIs('company.stages.*')">
                             {{ __('Company Home') }}
                         </x-nav-link>
                     @endif

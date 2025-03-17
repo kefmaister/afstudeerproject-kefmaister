@@ -50,7 +50,19 @@ Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(
 // Company Routes
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
     Route::get('/home', [CompanyController::class, 'index'])->name('home');
+
+    Route::get('/waiting', [CompanyController::class, 'waiting'])->name('waiting');
+
+    Route::get('/denied', fn () => view('company.denied'))->name('denied');
+
+    Route::get('/stages/create', [CompanyController::class, 'create'])->name('stages.create');
+    Route::post('/stages', [CompanyController::class, 'store'])->name('stages.store');
+    Route::put('/stages/{stage}/activate', [CompanyController::class, 'activateStage'])->name('stages.activate');
+    Route::put('/stages/{stage}/deactivate', [CompanyController::class, 'deactivateStage'])->name('stages.deactivate');
+    Route::put('/stages/{stage}', [CompanyController::class, 'update'])->name('stages.update');
 });
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

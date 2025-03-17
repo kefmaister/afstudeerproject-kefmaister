@@ -12,17 +12,20 @@ class Company extends Model
     protected $table = 'company';
 
     protected $fillable = [
+        'user_id',
         'company_name',
         'street',
         'streetNr',
         'town',
         'zip',
-        'mentor_id',
+        'phone',           // Add phone if needed
+        'employee_count',  // Add employee_count if needed
+        'logo',
         'accepted',
         'max_students',
         'student_amount',
-        'logo',
-        'user_id',
+        'company_vat',
+        'reason'
     ];
 
     // A company has a mentor.

@@ -14,10 +14,10 @@ class Stage extends Model
     protected $fillable = [
         'company_id',
         'active',
-        'logo_id',
         'title',
         'tasks',
         'studyfield_id',
+        'reason'
     ];
 
     // A stage belongs to one company.

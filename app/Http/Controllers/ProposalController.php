@@ -9,26 +9,21 @@ use Illuminate\Http\Request;
 class ProposalController extends Controller
 {
     public function show(Request $request)
-    {
-        // Ensure you fetch the student record related to the logged-in user.
-        $student = auth()->user()->student;
-        if (!$student) {
-            abort(404, 'Student record not found.');
-        }
-
-        $proposal = Proposal::with('stage.company', 'coordinator')
-            ->where('student_id', $student->id)
-            ->first();
-
-        if (!$proposal) {
-            $proposal = Proposal::create([
-                'student_id' => $student->id,
-                'status'     => 'draft',
-            ]);
-        }
-
-        return view('student.proposal', ['proposal' => $proposal]);
+{
+    $student = auth()->user()->student;
+    if (!$student) {
+        abort(404, 'Student record not found.');
     }
+
+    // Check if a proposal already exists
+    $proposal = Proposal::with('stage.company', 'coordinator')
+        ->where('student_id', $student->id)
+        ->first();
+
+    // Don't auto-create one here (avoid stage_id missing errors)
+    return view('student.proposal', ['proposal' => $proposal]);
+}
+
 
     public function create(Request $request)
 {
@@ -37,7 +32,13 @@ class ProposalController extends Controller
     $stage = Stage::with(['company', 'studyfield'])->findOrFail($stageId);
 
     // Get the logged-in student
-    $studentId = auth()->id();
+    $student = auth()->user()->student;
+
+    if (!$student) {
+        abort(403, 'Geen student gevonden voor deze gebruiker.');
+    }
+
+    $studentId = $student->id;
 
     // Get the coordinator_id from the stage's study field
     $coordinatorId = $stage->studyfield->coordinator_id;

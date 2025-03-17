@@ -61,7 +61,9 @@
         </table>
 
         <div class="mt-4">
-            {{ $students->links() }}
+            @if (method_exists($students, 'links'))
+                {{ $students->links() }}
+            @endif
         </div>
     </div>
 </x-app>
