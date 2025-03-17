@@ -17,6 +17,7 @@ class Stage extends Model
         'title',
         'tasks',
         'studyfield_id',
+        'reason'
     ];
 
     // A stage belongs to one company.

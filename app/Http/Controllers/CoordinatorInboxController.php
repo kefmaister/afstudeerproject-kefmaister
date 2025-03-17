@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -13,47 +12,30 @@ use App\Mail\StageDenialMail;
 
 class CoordinatorInboxController extends Controller
 {
-    // Combined index if needed
     public function index()
     {
-        // Return both pending companies and stages
-        $pendingCompanies = Company::where('accepted', 0)
-            ->with('user')
-            ->get();
-        $pendingStages = Stage::where('active', 0)
-            ->with('company.user')
-            ->get();
+        $pendingCompanies = Company::where('accepted', 0)->with('user')->get();
+        $pendingStages = Stage::where('active', 1)->with('company.user')->get(); // Only submitted stages
         return view('coordinator.inbox', compact('pendingCompanies', 'pendingStages'));
     }
 
-    // Index only companies
     public function indexCompanies()
-{
-    $pendingCompanies = Company::where('accepted', 0)
-        ->with('user')
-        ->get();
-    // Always get the stages count as well
-    $pendingStages = Stage::where('active', 0)
-        ->with('company.user')
-        ->get();
-    return view('coordinator.inbox', compact('pendingCompanies', 'pendingStages'));
-}
+    {
+        $pendingCompanies = Company::where('accepted', 0)->with('user')->get();
+        $pendingStages = Stage::where('active', 1)->with('company.user')->get();
+        return view('coordinator.inbox', compact('pendingCompanies', 'pendingStages'));
+    }
 
-public function indexStages()
-{
-    // Always get the companies count as well
-    $pendingCompanies = Company::where('accepted', 0)
-         ->with('user')
-         ->get();
-    $pendingStages = Stage::where('active', 0)
-         ->with('company.user')
-         ->get();
-    return view('coordinator.inbox', compact('pendingCompanies', 'pendingStages'));
-}
+    public function indexStages()
+    {
+        $pendingCompanies = Company::where('accepted', 0)->with('user')->get();
+        $pendingStages = Stage::where('active', 1)->with('company.user')->get();
+        return view('coordinator.inbox', compact('pendingCompanies', 'pendingStages'));
+    }
+
     public function approveCompany(Request $request, Company $company)
     {
-        $company->accepted = 1;
-        $company->save();
+        $company->update(['accepted' => 1]);
 
         Mail::to($company->user->email)->send(new CompanyApproved($company->user));
 
@@ -76,11 +58,12 @@ public function indexStages()
         return redirect()->back()->with('status', 'Company denied successfully!');
     }
 
-
     public function approveStage(Request $request, Stage $stage)
     {
-        $stage->active = 1;
-        $stage->save();
+        $stage->update([
+            'active' => 2, // 2 = approved
+            'reason' => ' ',
+        ]);
 
         Mail::to($stage->company->user->email)->send(new StageApprovalMail($stage));
 
@@ -92,8 +75,11 @@ public function indexStages()
         $request->validate([
             'reason' => 'required|string|max:255',
         ]);
-        $stage->active = -1;
-        $stage->save();
+
+        $stage->update([
+            'active' => -1,
+            'reason' => $request->input('reason'),
+        ]);
 
         Mail::to($stage->company->user->email)->send(new StageDenialMail($stage, $request->input('reason')));
 

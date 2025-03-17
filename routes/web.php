@@ -57,6 +57,8 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
 
     Route::get('/stages/create', [CompanyController::class, 'create'])->name('stages.create');
     Route::post('/stages', [CompanyController::class, 'store'])->name('stages.store');
+    Route::put('/stages/{stage}/activate', [CompanyController::class, 'activateStage'])->name('stages.activate');
+    Route::put('/stages/{stage}/deactivate', [CompanyController::class, 'deactivateStage'])->name('stages.deactivate');
     Route::put('/stages/{stage}', [CompanyController::class, 'update'])->name('stages.update');
 });
 
