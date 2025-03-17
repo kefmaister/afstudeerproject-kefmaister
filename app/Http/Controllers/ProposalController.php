@@ -32,7 +32,13 @@ class ProposalController extends Controller
     $stage = Stage::with(['company', 'studyfield'])->findOrFail($stageId);
 
     // Get the logged-in student
-    $studentId = auth()->id();
+    $student = auth()->user()->student;
+
+    if (!$student) {
+        abort(403, 'Geen student gevonden voor deze gebruiker.');
+    }
+
+    $studentId = $student->id;
 
     // Get the coordinator_id from the stage's study field
     $coordinatorId = $stage->studyfield->coordinator_id;
