@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('zip');
             $table->text('country');
             $table->text('website');
-            $table->boolean('accepted');
+            $table->tinyInteger('accepted');
             $table->integer('max_students');
             $table->integer('student_amount');
             $table->text('logo');
