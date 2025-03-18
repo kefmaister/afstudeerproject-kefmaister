@@ -18,7 +18,8 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
     Route::get('/upload', [StudentController::class, 'showUpload'])->name('showUpload');
     Route::post('/upload', [StudentController::class, 'storeUpload'])->name('storeUpload');
 
-    Route::get('/student/profile', [StudentController::class, 'profile'])->name('student.profile');
+    Route::get('/profile', [StudentController::class, 'profile'])->name('profile');
+    Route::put('/profile', [StudentController::class, 'updateProfile'])->name('profile.update');
 
 });
 Route::middleware(['auth'])->group(function () {
@@ -49,7 +50,8 @@ Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(
         Route::put('/stages/{stage}/deny', [CoordinatorInboxController::class, 'denyStage'])->name('deny.stage');
     });
 
-    Route::get('/coordinator/profile', [CoordinatorController::class, 'profile'])->name('coordinator.profile');
+    Route::get('/profile', [CoordinatorController::class, 'profile'])->name('profile');
+    Route::put('/profile', [CoordinatorController::class, 'updateProfile'])->name('profile.update');
 });
 // Company Routes
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
@@ -65,7 +67,7 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
     Route::put('/stages/{stage}/deactivate', [CompanyController::class, 'deactivateStage'])->name('stages.deactivate');
     Route::put('/stages/{stage}', [CompanyController::class, 'update'])->name('stages.update');
 
-    Route::get('/company/profile', [CompanyController::class, 'profile'])->name('profile');
+    Route::get('/profile', [CompanyController::class, 'profile'])->name('profile');
     Route::put('/profile', [CompanyController::class, 'updateProfile'])->name('profile.update');
 
 });

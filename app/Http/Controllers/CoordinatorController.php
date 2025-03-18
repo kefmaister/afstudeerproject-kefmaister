@@ -183,4 +183,27 @@ public function showStudentProposal(Student $student)
 
         return redirect()->route('coordinator.student.show', $cv->student_id)->with('status', 'Feedback gegeven.');
     }
+
+    public function profile()
+    {
+        $coordinator = auth()->user()->coordinator;
+        return view('coordinator.profile', compact('coordinator'));
+    }
+
+    public function updateProfile(Request $request)
+{
+    $coordinator = auth()->user()->coordinator;
+
+    $validated = $request->validate([
+        'firstname' => ['required', 'string', 'max:255'],
+        'lastname'  => ['required', 'string', 'max:255'],
+        'email'     => ['required', 'email', 'max:255'],
+    ]);
+
+    $user = $coordinator->user;
+
+    $user->update($validated);
+
+    return redirect()->route('coordinator.profile')->with('status', 'Profiel succesvol bijgewerkt!');
+}
 }
