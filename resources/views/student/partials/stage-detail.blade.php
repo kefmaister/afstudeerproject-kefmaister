@@ -13,18 +13,30 @@
                     <p class="text-sm text-gray-700">
                         <strong>BTW:</strong> {{ $selectedStage->company->company_vat }}
                     </p>
+                    @if ($selectedStage->company->website)
+                        <p class="text-sm text-blue-600">
+                            <a href="{{ $selectedStage->company->website }}" target="_blank" rel="noopener noreferrer">
+                                🌐 {{ parse_url($selectedStage->company->website, PHP_URL_HOST) }}
+                            </a>
+                        </p>
+                    @endif
                 @endif
             </div>
         </div>
+
         <p class="mb-4">{{ $selectedStage->tasks }}</p>
+
         @if ($selectedStage->company)
             <p class="text-sm text-gray-700">
-                <strong>Location:</strong>
+                <strong>Locatie:</strong>
                 {{ $selectedStage->company->street ?? '' }}
                 {{ $selectedStage->company->streetNr ?? '' }},
-                {{ $selectedStage->company->town ?? '' }}
+                {{ $selectedStage->company->zip ?? '' }}
+                {{ $selectedStage->company->town ?? '' }},
+                {{ $selectedStage->company->country ?? '' }}
             </p>
         @endif
+
         @if ($selectedStage->studyfield)
             <p class="text-sm text-gray-700">
                 <strong>Studierichting:</strong> {{ $selectedStage->studyfield->name }}
@@ -38,11 +50,10 @@
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Voorstel</button>
             </form>
 
-            <button class="bg-gray-200 text-black px-4 py-2 rounded">Zicht</button>
         </div>
     </div>
 @else
     <div class="bg-white p-4 rounded shadow">
-        <p class="text-gray-600">Select a stage to see details</p>
+        <p class="text-gray-600">Selecteer een stage om details te bekijken.</p>
     </div>
 @endif

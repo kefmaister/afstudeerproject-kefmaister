@@ -17,22 +17,22 @@
 
             <div>
                 <x-input-label for="firstname" :value="__('Voornaam')" />
-                <x-text-input id="firstname" name="firstname" type="text" :value="old('firstname')" required autofocus
-                    placeholder="Placeholder" class="w-full mt-1" />
+                <x-text-input id="firstname" name="firstname" type="text" :value="old('firstname')" required
+                    placeholder="Enter your first name" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="lastname" :value="__('Achternaam')" />
-                <x-text-input id="lastname" name="lastname" type="text" :value="old('lastname')" required autofocus
-                    placeholder="Placeholder" class="w-full mt-1" />
+                <x-text-input id="lastname" name="lastname" type="text" :value="old('lastname')" required
+                    placeholder="Enter your last name" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
             </div>
         </div>
         <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('E-mail')" />
-            <x-text-input id="email" name="email" type="email" :value="old('email')" required autofocus
-                placeholder="Placeholder" class="w-full mt-1" />
+            <x-text-input id="email" name="email" type="email" :value="old('email')" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                placeholder="Enter your email" class="w-full mt-1" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -40,14 +40,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <x-input-label for="password" :value="__('Wachtwoord')" />
-                <x-text-input id="password" name="password" type="password" required placeholder="Placeholder"
+                <x-text-input id="password" name="password" type="password" required placeholder="Enter your password"
                     class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="password_confirmation" :value="__('Bevestig wachtwoord')" />
                 <x-text-input id="password_confirmation" name="password_confirmation" type="password" required
-                    placeholder="Placeholder" class="w-full mt-1" />
+                    placeholder="Confirm your password" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
         </div>
@@ -81,7 +81,7 @@
                 <!-- Company Name -->
                 <div>
                     <x-input-label for="company_name" :value="__('Bedrijf naam')" />
-                    <x-text-input id="company_name" name="company_name" type="text" placeholder="Placeholder"
+                    <x-text-input id="company_name" name="company_name" type="text" placeholder="Your company name"
                         :value="old('company_name')" class="w-full mt-1" />
                     <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
                 </div>
@@ -89,13 +89,13 @@
                 <!-- VAT Number -->
                 <div>
                     <x-input-label for="company_vat" :value="__('BTW nummer')" />
-                    <x-text-input id="company_vat" name="company_vat" type="text" placeholder="Placeholder"
+                    <x-text-input id="company_vat" name="company_vat" type="text" placeholder="Company VAT number"
                         :value="old('company_vat')" class="w-full mt-1" />
                     <x-input-error :messages="$errors->get('company_vat')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="employee_count" :value="__('Werknemers aantal')" />
-                    <x-text-input id="employee_count" name="employee_count" type="number" placeholder="Placeholder"
+                    <x-text-input id="employee_count" name="employee_count" type="number" placeholder="Workers amount"
                         :value="old('employee_count')" class="w-full mt-1" min="0" />
                 </div>
             </div>
@@ -116,21 +116,28 @@
             }
         </script>
 
+            <div>
+                <x-input-label for="website" :value="__('Website')" />
+                <x-text-input id="website" name="website" type="url" :value="old('website')" required autofocus pattern="https?://.+"
+                    placeholder="https://example.com" class="w-full mt-1" />
+                <x-input-error :messages="$errors->get('website')" class="mt-2" />
+            </div>
+
         <!-- Address Row 1: Straat, Nr, Bus -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <x-input-label for="street" :value="__('Straat')" />
-                <x-text-input id="street" name="street" type="text" placeholder="Placeholder" :value="old('street')"
+                <x-text-input id="street" name="street" type="text" placeholder="Street name" :value="old('street')"
                     class="w-full mt-1" />
             </div>
             <div>
                 <x-input-label for="nr" :value="__('Nr.')" />
-                <x-text-input id="nr" name="nr" type="text" placeholder="Placeholder" :value="old('nr')"
+                <x-text-input id="nr" name="nr" type="text" placeholder="street number" :value="old('nr')"
                     class="w-full mt-1" />
             </div>
             <div>
                 <x-input-label for="bus" :value="__('Bus')" />
-                <x-text-input id="bus" name="bus" type="text" placeholder="Placeholder" :value="old('bus')"
+                <x-text-input id="bus" name="bus" type="text" placeholder="mailbox number" :value="old('bus')"
                     class="w-full mt-1" />
             </div>
         </div>
@@ -139,12 +146,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <x-input-label for="town" :value="__('Gemeente')" />
-                <x-text-input id="town" name="town" type="text" placeholder="Placeholder"
+                <x-text-input id="town" name="town" type="text" placeholder="City"
                     :value="old('town')" class="w-full mt-1" />
             </div>
             <div>
                 <x-input-label for="zip" :value="__('Postcode')" />
-                <x-text-input id="zip" name="zip" type="text" placeholder="Placeholder"
+                <x-text-input id="zip" name="zip" type="text" placeholder="Zip code"
                     :value="old('zip')" class="w-full mt-1" />
             </div>
         </div>
@@ -158,6 +165,30 @@
                 <option value="België" selected>België</option>
                 <option value="Nederland">Nederland</option>
                 <option value="Frankrijk">Frankrijk</option>
+                <option value="Duitsland">Duitsland</option>
+                <option value="Luxemburg">Luxemburg</option>
+                <option value="Oostenrijk">Oostenrijk</option>
+                <option value="Bulgarije">Bulgarije</option>
+                <option value="Kroatië">Kroatië</option>
+                <option value="Cyprus">Cyprus</option>
+                <option value="Tsjechië">Tsjechië</option>
+                <option value="Denemarken">Denemarken</option>
+                <option value="Estland">Estland</option>
+                <option value="Finland">Finland</option>
+                <option value="Griekenland">Griekenland</option>
+                <option value="Hongarije">Hongarije</option>
+                <option value="Ierland">Ierland</option>
+                <option value="Italië">Italië</option>
+                <option value="Letland">Letland</option>
+                <option value="Litouwen">Litouwen</option>
+                <option value="Malta">Malta</option>
+                <option value="Polen">Polen</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Roemenië">Roemenië</option>
+                <option value="Slovenië">Slovenië</option>
+                <option value="Slowakije">Slowakije</option>
+                <option value="Spanje">Spanje</option>
+                <option value="Zweden">Zweden</option>
             </select>
             <x-input-error :messages="$errors->get('country')" />
             </div>

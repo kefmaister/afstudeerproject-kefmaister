@@ -19,7 +19,9 @@ class StudentController extends Controller
         $land = $request->input('land');
 
         // 2. Build the query for stages
-        $query = Stage::query()->with('company');
+        $query = Stage::query()
+        ->with('company')
+        ->where('active', 2); // Only approved stages
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -54,16 +56,16 @@ class StudentController extends Controller
         $stages = $query->paginate(6);
 
         // 4. Get distinct locations and lands (from Stage -> Company)
-        $locations = Stage::with('company')
-            ->get()
+        $approvedStages = Stage::with('company')->where('active', 2)->get();
+
+        $locations = $approvedStages
             ->pluck('company.town')
             ->filter()
             ->unique()
             ->values();
 
-        $lands = Stage::with('company')
-            ->get()
-            ->pluck('company.zip')
+        $lands = $approvedStages
+            ->pluck('company.country')
             ->filter()
             ->unique()
             ->values();
@@ -128,5 +130,36 @@ class StudentController extends Controller
 
     return redirect()->route('student.showUpload')->with('status', 'CV uploaded successfully.');
 }
+
+public function profile(){
+    $student = auth()->user()->student;
+    return view('student.profile', compact('student'));
+}
+
+public function updateProfile(Request $request)
+{
+    $user = auth()->user();
+
+    $validated = $request->validate([
+        'firstname' => ['required', 'string', 'max:255'],
+        'lastname'  => ['required', 'string', 'max:255'],
+        'email'     => ['required', 'email', 'max:255'],
+        'password'  => ['nullable', 'min:8'],
+    ]);
+
+    // Update name and email
+    $user->firstname = $validated['firstname'];
+    $user->lastname  = $validated['lastname'];
+    $user->email     = $validated['email'];
+
+    if (!empty($validated['password'])) {
+        $user->password = bcrypt($validated['password']);
+    }
+
+    $user->save();
+
+    return redirect()->route('student.profile')->with('status', 'Profiel succesvol bijgewerkt!');
+}
+
 
 }

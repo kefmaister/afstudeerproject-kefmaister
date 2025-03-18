@@ -35,6 +35,8 @@ class RegisteredUserController extends Controller
         'lastname' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        'country' => ['required', 'string', 'max:255'],
+        'website' => ['nullable', 'url'],
         // Optionally add other validation rules for company info:
         'company_name' => ['required', 'string', 'max:255'],
         'street'       => ['required', 'string', 'max:255'],
@@ -74,6 +76,8 @@ class RegisteredUserController extends Controller
         'streetNr'     => $request->nr,
         'town'         => $request->town,
         'zip'          => $request->zip,
+        'country'      => $request->country,
+        'website'      => $request->website,
         'employee_count' => $request->employee_count ?? 0,
         'logo'         => $logoPath,
         'accepted'     => 0, // pending approval

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Mentor;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MentorFactory extends Factory
@@ -16,7 +17,7 @@ class MentorFactory extends Factory
             'lastname'   => $this->faker->lastname,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
-            'company_id' => $this->faker->numberBetween(1, 5),
+            'company_id' => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
 
         ];
     }

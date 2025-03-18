@@ -24,6 +24,8 @@ return new class extends Migration
             $table->smallInteger('streetNr');
             $table->text('town');
             $table->string('zip');
+            $table->text('country');
+            $table->text('website');
             $table->boolean('accepted');
             $table->integer('max_students');
             $table->integer('student_amount');

@@ -18,6 +18,9 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
     Route::get('/upload', [StudentController::class, 'showUpload'])->name('showUpload');
     Route::post('/upload', [StudentController::class, 'storeUpload'])->name('storeUpload');
 
+    Route::get('/profile', [StudentController::class, 'profile'])->name('profile');
+    Route::put('/profile', [StudentController::class, 'updateProfile'])->name('profile.update');
+
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/proposal', [ProposalController::class, 'show'])->name('proposal.show');
@@ -46,6 +49,9 @@ Route::middleware(['auth'])->prefix('coordinator')->name('coordinator.')->group(
         Route::put('/stages/{stage}/approve', [CoordinatorInboxController::class, 'approveStage'])->name('approve.stage');
         Route::put('/stages/{stage}/deny', [CoordinatorInboxController::class, 'denyStage'])->name('deny.stage');
     });
+
+    Route::get('/profile', [CoordinatorController::class, 'profile'])->name('profile');
+    Route::put('/profile', [CoordinatorController::class, 'updateProfile'])->name('profile.update');
 });
 // Company Routes
 Route::middleware(['auth'])->prefix('company')->name('company.')->group(function () {
@@ -53,21 +59,29 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
 
     Route::get('/waiting', [CompanyController::class, 'waiting'])->name('waiting');
 
-    Route::get('/denied', fn () => view('company.denied'))->name('denied');
+    Route::get('/denied', [CompanyController::class, 'denied'])->name('denied');
 
     Route::get('/stages/create', [CompanyController::class, 'create'])->name('stages.create');
     Route::post('/stages', [CompanyController::class, 'store'])->name('stages.store');
     Route::put('/stages/{stage}/activate', [CompanyController::class, 'activateStage'])->name('stages.activate');
     Route::put('/stages/{stage}/deactivate', [CompanyController::class, 'deactivateStage'])->name('stages.deactivate');
     Route::put('/stages/{stage}', [CompanyController::class, 'update'])->name('stages.update');
+
+    Route::get('/profile', [CompanyController::class, 'profile'])->name('profile');
+    Route::put('/profile', [CompanyController::class, 'updateProfile'])->name('profile.update');
+
 });
 
 
 
+// Route group for profile management
+// This block handles editing, updating, and deleting user profiles
+/*
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+*/
 
 require __DIR__.'/auth.php';

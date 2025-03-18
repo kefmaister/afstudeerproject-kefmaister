@@ -11,11 +11,12 @@
     <!-- Order (Alphabet or Most Recent) -->
     <div>
         <label for="order" class="sr-only">Order</label>
-        <select id="order" name="order" class="border border-gray-300 rounded p-2">
+        <select id="order" name="order" class="border border-gray-300 rounded p-2 pr-8 min-w-[160px]">
             <option value="alphabet" @selected($order === 'alphabet')>Alphabet</option>
             <option value="recent" @selected($order === 'recent')>Most Recent</option>
         </select>
     </div>
+
 
     <!-- Search -->
     <div>
@@ -27,7 +28,7 @@
     <!-- Location Filter -->
     <div>
         <label for="location" class="sr-only">Location</label>
-        <select id="location" name="location" class="border border-gray-300 rounded p-2">
+        <select id="location" name="location" class="border border-gray-300 rounded p-2 pr-8 min-w-[160px]">
             <option value="">All Locations</option>
             @foreach ($locations as $loc)
                 <option value="{{ $loc }}" @selected($loc == $location)>
@@ -36,6 +37,7 @@
             @endforeach
         </select>
     </div>
+
 
     <!-- Land Filter -->
     <div>

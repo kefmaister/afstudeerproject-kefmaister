@@ -18,6 +18,8 @@ class Company extends Model
         'streetNr',
         'town',
         'zip',
+        'country',
+        'website',
         'phone',           // Add phone if needed
         'employee_count',  // Add employee_count if needed
         'logo',

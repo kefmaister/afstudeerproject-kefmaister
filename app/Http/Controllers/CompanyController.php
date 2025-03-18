@@ -16,6 +16,7 @@ class CompanyController extends Controller
 
     if (!$company) {
         abort(403, 'Geen bedrijf gekoppeld aan dit account.');
+        return redirect()->route('company.home')->with('status', 'Terug naar home.');
     }
 
     if ($company->accepted === 0) {
@@ -76,7 +77,8 @@ public function waiting()
 
     if (!$company) {
         abort(403, 'Geen bedrijf gekoppeld aan dit account.');
-    }
+        return redirect()->route('company.home')->with('status', 'Terug naar home.');
+        }
 
     // Validate incoming data
     $validated = $request->validate([
@@ -126,6 +128,62 @@ private function authorizeStageAccess(Stage $stage)
     if ($stage->company_id !== auth()->user()->company->id) {
         abort(403);
     }
+}
+
+public function denied()
+{
+    $company = auth()->user()->company;
+
+    if (!$company) {
+        abort(403, 'Geen bedrijf gekoppeld aan dit account.');
+    }
+
+    $reason = $company->reason;
+    $coordinators = \App\Models\Coordinator::with('user')->get();
+
+    return view('company.denied', compact('reason', 'coordinators'));
+}
+
+
+public function profile()
+{
+    $company = auth()->user()->company;
+
+    if (!$company) {
+        abort(403, 'Geen bedrijf gekoppeld aan dit account.');
+    }
+
+    return view('company.profile', compact('company'));
+}
+
+public function updateProfile(Request $request)
+{
+    $company = auth()->user()->company;
+
+    $validated = $request->validate([
+        'company_name' => 'required|string|max:255',
+        'company_vat' => 'nullable|string|max:50',
+        'street' => 'nullable|string|max:255',
+        'streetNr' => 'nullable|string|max:10',
+        'zip' => 'nullable|string|max:10',
+        'town' => 'nullable|string|max:255',
+        'country' => 'nullable|string|max:255',
+        'website' => 'nullable|url|max:255',
+        'phone' => 'nullable|string|max:50',
+        'employee_count' => 'nullable|integer',
+        'max_students' => 'nullable|integer',
+        'student_amount' => 'nullable|integer',
+        'logo' => 'nullable|image|max:2048',
+    ]);
+
+
+    if ($request->hasFile('logo')) {
+        $validated['logo'] = $request->file('logo')->store('logos', 'public');
+    }
+
+    $company->update($validated);
+
+    return redirect()->route('company.profile')->with('status', 'Profiel succesvol bijgewerkt.');
 }
 
 
