@@ -19,7 +19,9 @@ class StudentController extends Controller
         $land = $request->input('land');
 
         // 2. Build the query for stages
-        $query = Stage::query()->with('company');
+        $query = Stage::query()
+        ->with('company')
+        ->where('active', 2); // Only approved stages
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -54,15 +56,15 @@ class StudentController extends Controller
         $stages = $query->paginate(6);
 
         // 4. Get distinct locations and lands (from Stage -> Company)
-        $locations = Stage::with('company')
-            ->get()
+        $approvedStages = Stage::with('company')->where('active', 2)->get();
+
+        $locations = $approvedStages
             ->pluck('company.town')
             ->filter()
             ->unique()
             ->values();
 
-        $lands = Stage::with('company')
-            ->get()
+        $lands = $approvedStages
             ->pluck('company.zip')
             ->filter()
             ->unique()

@@ -57,9 +57,10 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                        <x-dropdown-link :href="route(Auth::user()->role . '.profile')">
+                            {{ __('Profiel') }}
                         </x-dropdown-link>
+
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -106,8 +107,7 @@
                 <x-responsive-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')">
                     {{ __('Coordinator Home') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('coordinator.inbox.companies')"
-                    :active="request()->routeIs('coordinator.inbox.*')">
+                <x-responsive-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
                     {{ __('Inbox') }}
                 </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'company')
@@ -124,9 +124,10 @@
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                <x-responsive-nav-link :href="route(Auth::user()->role . '.profile')">
+                    {{ __('Profiel') }}
                 </x-responsive-nav-link>
+
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
