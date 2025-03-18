@@ -15,13 +15,13 @@ class ProposalFactory extends Factory
     public function definition(): array
     {
         return [
-            'stage_id'       => Stage::factory(),
+            'stage_id'       => Stage::inRandomOrder()->first()->id ?? Stage::factory()->create()->id,
             'student_id'     => Student::inRandomOrder()->first()->id ?? Student::factory()->create()->id,
             'tasks'          => $this->faker->text,
             'motivation'     => $this->faker->paragraph,
             'status'         => $this->faker->RandomElement(['draft', 'pending', 'approved', 'denied']),
             'feedback'       => $this->faker->sentence,
-            'coordinator_id' => \App\Models\Coordinator::factory(),
+            'coordinator_id' => Coordinator::inRandomOrder()->first()->id ?? Coordinator::factory()->create()->id,
         ];
     }
 }

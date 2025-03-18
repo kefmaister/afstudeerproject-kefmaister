@@ -20,11 +20,13 @@ class CompanyFactory extends Factory
             'streetNr'       => $this->faker->numberBetween(1, 300),
             'town'           => $this->faker->city,
             'zip'            => $this->faker->postcode,
-            'accepted'       => $this->faker->boolean,
+            'accepted'       => $this->faker->randomElement([-1, 0, 1, 2]),
             'max_students'   => $this->faker->numberBetween(1, 100),
-            'student_amount' => $this->faker->numberBetween(0, 100),
+            'student_amount' => $this->faker->numberBetween(1, 100),
             'logo'           => $this->faker->imageUrl(),
-            'user_id'        => User::factory(),
+            'user_id'        => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
+            'company_vat'    => $this->faker->regexify('[A-Z]{2}[0-9]{8,12}'),
+            'reason'         => '',
         ];
     }
 }

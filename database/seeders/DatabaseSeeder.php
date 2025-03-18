@@ -19,78 +19,84 @@ use App\Models\Logo;
 class DatabaseSeeder extends Seeder
 {
     public function run()
-    {
-        // Create specific users for each role
-        $coordinatorUser = User::create([
-            'firstname'         => 'Coordinator',
-            'lastname'          => 'User',
-            'email'             => 'coordinator@mail.com',
-            'email_verified_at' => now(),
-            'password'          => Hash::make('password'),
-            'remember_token'    => Str::random(10),
-            'role'              => 'coordinator',
-        ]);
+{
+    // Create specific users for each role
+    $coordinatorUser = User::create([
+        'firstname'         => 'Coordinator',
+        'lastname'          => 'User',
+        'email'             => 'coordinator@mail.com',
+        'email_verified_at' => now(),
+        'password'          => Hash::make('password'),
+        'remember_token'    => Str::random(10),
+        'role'              => 'coordinator',
+    ]);
 
-        User::create([
-            'firstname'         => 'Company',
-            'lastname'          => 'User',
-            'email'             => 'company@mail.com',
-            'email_verified_at' => now(),
-            'password'          => Hash::make('password'),
-            'remember_token'    => Str::random(10),
-            'role'              => 'company',
-        ]);
+    User::create([
+        'firstname'         => 'Company',
+        'lastname'          => 'User',
+        'email'             => 'company@mail.com',
+        'email_verified_at' => now(),
+        'password'          => Hash::make('password'),
+        'remember_token'    => Str::random(10),
+        'role'              => 'company',
+    ]);
 
-        User::create([
-            'firstname'         => 'Student',
-            'lastname'          => 'User',
-            'email'             => 'student@mail.com',
-            'email_verified_at' => now(),
-            'password'          => Hash::make('password'),
-            'remember_token'    => Str::random(10),
-            'role'              => 'student',
-        ]);
-        
-        // Create additional users
-        User::factory(10)->create();
-        // Create a coordinator record for the coordinator user.
-        // This record is needed so that studyfields can reference a valid coordinator.
-        $coordinator = Coordinator::factory()->create([
-            'user_id' => $coordinatorUser->id,
-        ]);
-        
-        // Seed studyfields using the forCoordinator state so that each studyfield gets a valid coordinator_id.
-        $studyfields = Studyfield::factory(3)
-        ->forCoordinator($coordinator)
-        ->create();
-        
-        // Create additional records for other models.
-        Cv::factory(10)->create();
-        Company::factory(5)->create();
-        Mentor::factory(5)->create();
-        Stage::factory(8)->create();
-        // Loop through all users with role 'student' and create corresponding student records if they don't already exist.
-        $studentUsers = User::where('role', 'student')->get();
-        foreach ($studentUsers as $user) {
-            if (!$user->student) {
-                // Use one of the seeded studyfields at random.
-                $student = Student::factory()->create([
-                    'user_id'       => $user->id,
-                    'studyfield_id' => $studyfields->random()->id,
-                    'class'         => 'A', // Default class
-                    'year'          => now()->year,
-                ]);
-            } else {
-                $student = $user->student;
-            }
+    User::create([
+        'firstname'         => 'Student',
+        'lastname'          => 'User',
+        'email'             => 'student@mail.com',
+        'email_verified_at' => now(),
+        'password'          => Hash::make('password'),
+        'remember_token'    => Str::random(10),
+        'role'              => 'student',
+    ]);
 
-            // Create a proposal for each student with a random status.
-            Proposal::factory()->create([
-                'student_id'     => $student->id,
-                'coordinator_id' => $student->studyfield->coordinator_id,
-                'status'         => collect(['draft', 'pending', 'approved', 'denied'])->random(),
-                'feedback'       => 'This is a random feedback.',
-            ]);
-        }
+    // Create additional users
+    User::factory(10)->create();
+
+    // 🔧 Create a Coordinator model for every user with role = coordinator
+    $coordinatorUsers = User::where('role', 'coordinator')->get();
+    foreach ($coordinatorUsers as $user) {
+        Coordinator::firstOrCreate(['user_id' => $user->id]);
     }
+
+    // Create 3 studyfields, each linked to a random coordinator
+    $coordinators = Coordinator::all();
+    $studyfields = collect();
+    foreach (range(1, 3) as $i) {
+        $studyfields->push(
+            Studyfield::factory()->create([
+                'coordinator_id' => $coordinators->random()->id,
+            ])
+        );
+    }
+
+    // Continue seeding
+    Company::factory(5)->create();
+    Mentor::factory(5)->create();
+    Stage::factory(8)->create();
+    Cv::factory(10)->create();
+
+    // Create student records for each student user
+    $studentUsers = User::where('role', 'student')->get();
+    foreach ($studentUsers as $user) {
+        $student = Student::firstOrCreate([
+            'user_id' => $user->id
+        ], [
+            'studyfield_id' => $studyfields->random()->id,
+            'class' => 'A',
+            'year' => now()->year,
+        ]);
+
+        // Create proposals for students
+        Proposal::factory()->create([
+            'student_id'     => $student->id,
+            'stage_id'       => Stage::inRandomOrder()->first()->id,
+            'coordinator_id' => $student->studyfield->coordinator_id,
+            'status'         => collect(['draft', 'pending', 'approved', 'denied'])->random(),
+            'feedback'       => 'This is a random feedback.',
+        ]);
+    }
+}
+
 }
