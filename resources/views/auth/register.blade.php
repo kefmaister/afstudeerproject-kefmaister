@@ -139,11 +139,6 @@
                 <x-text-input id="nr" name="nr" type="text" placeholder="street number"
                     :value="old('nr')" class="w-full mt-1" />
             </div>
-            <div>
-                <x-input-label for="bus" :value="__('Bus')" />
-                <x-text-input id="bus" name="bus" type="text" placeholder="mailbox number"
-                    :value="old('bus')" class="w-full mt-1" />
-            </div>
         </div>
 
         <!-- Address Row 2: Gemeente, Postcode -->

@@ -34,6 +34,10 @@
                         <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home') || request()->routeIs('company.stages.*')">
                             {{ __('Company Home') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('company.student-list')" :active="request()->routeIs('company.student-list')">
+                            {{ __('Student list') }}
+                        </x-nav-link>
+
                     @endif
                 </div>
             </div>

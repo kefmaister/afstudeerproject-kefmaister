@@ -33,7 +33,7 @@ class Company extends Model
     // A company has a mentor.
     public function mentor()
     {
-        return $this->belongsTo(Mentor::class);
+        return $this->hasOne(Mentor::class);
     }
     // A company can create many stages (internships) across different studyfields.
     public function stages()

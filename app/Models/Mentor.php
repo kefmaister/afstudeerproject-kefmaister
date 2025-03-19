@@ -16,11 +16,19 @@ class Mentor extends Model
         'lastname',
         'phone',
         'email',
+        'stage_id',
     ];
 
     // A mentor is bound to one company.
     public function company()
     {
-        return $this->hasOne(Company::class);
+        return $this->belongsTo(Company::class);
     }
+
+    public function stage()
+{
+    return $this->belongsTo(Stage::class);
+}
+
+
 }

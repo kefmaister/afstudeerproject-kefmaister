@@ -37,4 +37,10 @@ class Stage extends Model
     {
         return $this->hasMany(Proposal::class);
     }
+
+    public function mentor()
+{
+    return $this->hasOne(Mentor::class);
+}
+
 }

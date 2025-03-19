@@ -61,6 +61,7 @@ Route::middleware(['auth', 'role:company'])->prefix('company')->name('company.')
     Route::get('/home', [CompanyController::class, 'index'])->name('home');
     Route::get('/waiting', [CompanyController::class, 'waiting'])->name('waiting');
     Route::get('/denied', [CompanyController::class, 'denied'])->name('denied');
+    Route::get('/students', [CompanyController::class, 'studentList'])->name('student-list');
     Route::get('/stages/create', [CompanyController::class, 'create'])->name('stages.create');
     Route::post('/stages', [CompanyController::class, 'store'])->name('stages.store');
     Route::put('/stages/{stage}/activate', [CompanyController::class, 'activateStage'])->name('stages.activate');
