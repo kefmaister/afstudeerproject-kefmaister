@@ -26,7 +26,17 @@ class RoleMiddleware
         // Check if the authenticated user's role is one of the allowed roles.
         $userRole = Auth::user()->role;
         if (!in_array($userRole, $roles)) {
-            abort(403, 'Unauthorized action.');
+            // Redirect based on user role
+            switch ($userRole) {
+                case 'student':
+                    return redirect()->route('student.home');
+                case 'coordinator':
+                    return redirect()->route('coordinator.home');
+                case 'company':
+                    return redirect()->route('company.home');
+                default:
+                    abort(403, 'Unauthorized action.');
+            }
         }
 
         return $next($request);
