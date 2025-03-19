@@ -26,9 +26,12 @@
         </div>
 
         <!-- Card Container -->
-        <div class="max-w-md w-full bg-white p-6 rounded shadow mt-6">
+        @props(['wide' => false])
+
+        <div class="{{ $wide ? 'max-w-3xl' : 'max-w-md' }} w-full bg-white p-6 rounded shadow mt-6">
             {{ $slot }}
         </div>
+
     </div>
 </body>
 

@@ -9,6 +9,11 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CoordinatorProposalController;
 use App\Http\Controllers\CoordinatorInboxController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Carbon;
+use App\Models\User;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -73,15 +78,25 @@ Route::middleware(['auth'])->prefix('company')->name('company.')->group(function
 });
 
 
+Route::get('/magic-login/{user}', function (User $user, Request $request) {
+    if (! $request->hasValidSignature()) {
+        abort(401, 'Invalid or expired link.');
+    }
 
-// Route group for profile management
-// This block handles editing, updating, and deleting user profiles
-/*
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-*/
+    Auth::login($user);
+
+    // Redirect based on role (optional)
+    switch ($user->role) {
+        case 'company':
+            return redirect()->route('company.home');
+        case 'student':
+            return redirect()->route('student.home');
+        case 'coordinator':
+            return redirect()->route('coordinator.home');
+        default:
+            abort(403, 'Ongeldige rol.');
+    }
+})->name('magic.login');
+
 
 require __DIR__.'/auth.php';
