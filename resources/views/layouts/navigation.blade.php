@@ -30,9 +30,16 @@
                         <x-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
                             {{ __('Inbox') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('coordinator.approved-companies')" :active="request()->routeIs('coordinator.approved-companies')">
+                            {{ __('Goedgekeurde Bedrijven') }}
+                        </x-nav-link>
                     @elseif (Auth::user()->role === 'company')
                         <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home') || request()->routeIs('company.stages.*')">
                             {{ __('Company Home') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('company.student-list')" :active="request()->routeIs('company.student-list') ||
+                            request()->routeIs('company.student.*')">
+                            {{ __('Student list') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -110,9 +117,15 @@
                 <x-responsive-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
                     {{ __('Inbox') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('coordinator.approved-companies')" :active="request()->routeIs('coordinator.approved-companies')">
+                    {{ __('Goedgekeurde Bedrijven') }}
+                </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'company')
                 <x-responsive-nav-link :href="route('company.home')" :active="request()->routeIs('company.home')">
                     {{ __('Company Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('company.student-list')" :active="request()->routeIs('company.student-list') || request()->routeIs('company.student.*')">
+                    {{ __('Student list') }}
                 </x-responsive-nav-link>
             @endif
         </div>

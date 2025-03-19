@@ -37,26 +37,32 @@ class CoordinatorInboxController extends Controller
     {
         $company->update(['accepted' => 1]);
 
-        Mail::to($company->user->email)->send(new CompanyApproved($company->user));
+        \Log::info('Sending approval email to: ' . $company->user->email);
+        Mail::to($company->user->email)->send(new CompanyApproved($company));
+        \Log::info('Email sent');
 
         return redirect()->back()->with('status', 'Company approved successfully!');
     }
 
     public function denyCompany(Request $request, Company $company)
-    {
-        $request->validate([
-            'reason' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'reason' => 'required|string|max:255',
+    ]);
 
-        $company->update([
-            'accepted' => -1,
-            'reason' => $request->input('reason'),
-        ]);
+    $company->update([
+        'accepted' => -1,
+        'reason' => $request->input('reason'),
+    ]);
 
-        Mail::to($company->user->email)->send(new CompanyDenied($company->user, $request->input('reason')));
+    $coordinator = auth()->user()->coordinator;
 
-        return redirect()->back()->with('status', 'Company denied successfully!');
-    }
+    Mail::to($company->user->email)->send(
+        new CompanyDenied($company, $request->input('reason'), $coordinator)
+    );
+
+    return redirect()->back()->with('status', 'Company denied successfully!');
+}
 
     public function approveStage(Request $request, Stage $stage)
     {

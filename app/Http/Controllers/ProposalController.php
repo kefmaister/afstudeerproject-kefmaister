@@ -16,9 +16,10 @@ class ProposalController extends Controller
     }
 
     // Check if a proposal already exists
-    $proposal = Proposal::with('stage.company', 'coordinator')
-        ->where('student_id', $student->id)
-        ->first();
+    $proposal = Proposal::with('stage.company', 'stage.mentor', 'coordinator')
+    ->where('student_id', $student->id)
+    ->first();
+
 
     // Don't auto-create one here (avoid stage_id missing errors)
     return view('student.proposal', ['proposal' => $proposal]);
@@ -69,48 +70,70 @@ class ProposalController extends Controller
     return redirect()->route('proposal.show', ['proposal' => $proposal->id]);
 }
 
-    public function store(Request $request)
-    {
-        // Validate form input
-        $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
-            'street' => 'required|string|max:255',
-            'nr' => 'required|string|max:10',
-            'zip' => 'required|string|max:10',
-            'town' => 'required|string|max:255',
-            'stage_mentor' => 'required|string|max:255',
-            'stage_mentor_email' => 'required|email|max:255',
-            'tasks' => 'required|string',
-            'motivation' => 'required|string',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'stage_id' => 'required|exists:stage,id',
+        'company_name' => 'required|string|max:255',
+        'street' => 'required|string|max:255',
+        'nr' => 'required|string|max:10',
+        'zip' => 'required|string|max:10',
+        'town' => 'required|string|max:255',
+        'stage_mentor_firstname' => 'required|string|max:255',
+        'stage_mentor_lastname' => 'required|string|max:255',
+        'stage_mentor_email' => 'required|email|max:255',
+        'stage_mentor_phone' => 'nullable|string|max:50',
+        'tasks' => 'required|string',
+        'motivation' => 'required|string',
+    ]);
 
-        // Find or create the student's proposal
-        $proposal = Proposal::firstOrNew([
-            'student_id' => auth()->id(),
-        ]);
-
-        // Fill fields from validated data
-        $proposal->fill($validated);
-
-        // Set status to draft if not already set
-        if (!$proposal->exists) {
-            $proposal->status = 'draft';
-        }
-        $proposal->status = 'pending';
-
-        // Save the proposal
-        $proposal->save();
-
-        // Create a new mentor and link to the company based on the stage ID
-        $mentor = Mentor::create([
-            'firstname' => $request->input('stage_mentor'),
-            'lastname' => '',
-            'phone' => '',
-            'email' => $request->input('stage_mentor_email'),
-            'company_id' => $proposal->stage->company->id,
-        ]);
-
-        return redirect()->route('proposal.show')
-            ->with('status', 'Proposal submitted successfully!');
+    $student = auth()->user()->student;
+    if (!$student) {
+        abort(403, 'Geen student gekoppeld aan dit account.');
     }
+
+    // 🔥 Load stage (with company) directly from validated data
+    $stage = Stage::with('company')->findOrFail($validated['stage_id']);
+    $company = $stage->company;
+
+    if (!$company) {
+        abort(403, 'Geen bedrijf gekoppeld aan deze stage.');
+    }
+
+    // 🔄 Find or create proposal
+    $proposal = Proposal::firstOrNew([
+        'student_id' => $student->id,
+        'stage_id' => $validated['stage_id'],
+    ]);
+
+    $proposal->fill([
+        'tasks' => $validated['tasks'],
+        'motivation' => $validated['motivation'],
+        'status' => 'pending',
+        'coordinator_id' => $stage->studyfield->coordinator_id ?? null,
+    ]);
+
+    $proposal->save();
+
+    // ✅ Check if mentor already exists
+    $mentor = Mentor::where('email', $validated['stage_mentor_email'])
+    ->where('stage_id', $stage->id)
+    ->first();
+
+    if (!$mentor) {
+        $mentor = Mentor::create([
+            'firstname' => $validated['stage_mentor_firstname'],
+            'lastname' => $validated['stage_mentor_lastname'],
+            'email' => $validated['stage_mentor_email'],
+            'phone' => $validated['stage_mentor_phone'] ?? '',
+            'stage_id' => $stage->id,
+        ]);
+    }
+
+    return redirect()->route('proposal.show')
+        ->with('status', 'Voorstel succesvol ingediend!');
+}
+
+
+
 }

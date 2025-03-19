@@ -45,6 +45,7 @@ class RegisteredUserController extends Controller
         'zip'          => ['required', 'string'],
         'employee_count' => ['nullable', 'numeric'],
         'company_vat'  => ['nullable', 'string', 'max:255'],
+        'logo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
     ]);
 
     // Create the new user (assumed role is set to 'company' either by default or via form/input)

@@ -1,64 +1,73 @@
-<div class="grid grid-cols-2 gap-4">
-    <!-- Company Name -->
-    <div>
-        <label class="block font-semibold mb-1">Bedrijf naam</label>
-        <input type="text" value="{{ $proposal->stage->company->company_name ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
+@php
+    $mentor = $proposal->stage->mentor ?? null;
+@endphp
+
+<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">Bedrijf Naam</label>
+            <input type="text" value="{{ $proposal->stage->company->company_name ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
     </div>
-    <div>
-        <label class="block font-semibold mb-1">Straat</label>
-        <input type="text" value="{{ $proposal->stage->company->street ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">Straat</label>
+            <input type="text" value="{{ $proposal->stage->company->street ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
+        <div>
+            <label class="block font-semibold mb-1">Nr</label>
+            <input type="text" value="{{ $proposal->stage->company->streetNr ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
+        <div>
+            <label class="block font-semibold mb-1">Postcode</label>
+            <input type="text" value="{{ $proposal->stage->company->zip ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
     </div>
 
-    <!-- Nr / Postcode -->
-    <div>
-        <label class="block font-semibold mb-1">Nr</label>
-        <input type="text" value="{{ $proposal->stage->company->streetNr ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
-    </div>
-    <div>
-        <label class="block font-semibold mb-1">Postcode</label>
-        <input type="text" value="{{ $proposal->stage->company->zip ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">Gemeente</label>
+            <input type="text" value="{{ $proposal->stage->company->town ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
     </div>
 
-    <!-- Gemeente / Mentor -->
-    <div>
-        <label class="block font-semibold mb-1">Gemeente</label>
-        <input type="text" value="{{ $proposal->stage->company->town ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
-    </div>
-    <div>
-        <label class="block font-semibold mb-1">Naam stagementor</label>
-        <input type="text"
-            value="{{ $proposal->stage->company->mentor->firstname ?? '' }} {{ $proposal->stage->company->mentor->lastname ?? '' }}"
-            disabled class="w-full border-gray-300 rounded p-2 bg-gray-100">
-    </div>
-
-    <!-- Mentor Email -->
-    <div>
-        <label class="block font-semibold mb-1">E-mail stagementor</label>
-        <input type="text" value="{{ $proposal->stage->company->mentor->email ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
-    </div>
-
-    <!-- Mentor phone -->
-    <div>
-        <label class="block font-semibold mb-1">Telefoon stagementor</label>
-        <input type="text" value="{{ $proposal->stage->company->mentor->phone ?? '' }}" disabled
-            class="w-full border-gray-300 rounded p-2 bg-gray-100">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">Voornaam stagementor</label>
+            <input type="text" value="{{ $mentor->firstname ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
+        <div>
+            <label class="block font-semibold mb-1">Achternaam stagementor</label>
+            <input type="text" value="{{ $mentor->lastname ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
+        <div>
+            <label class="block font-semibold mb-1">E-mail stagementor</label>
+            <input type="text" value="{{ $mentor->email ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
+        <div>
+            <label class="block font-semibold mb-1">Telefoonnummer stagementor</label>
+            <input type="text" value="{{ $mentor->phone ?? '' }}" disabled
+                class="w-full border-gray-300 rounded p-2 bg-gray-100">
+        </div>
     </div>
 
-    <!-- Tasks -->
-    <div class="col-span-2">
+    <div>
         <label class="block font-semibold mb-1">Taken toelichting</label>
-        <textarea disabled class="w-full border-gray-300 rounded p-2 bg-gray-100" rows="3">{{ $proposal->tasks ?? '' }}</textarea>
+        <textarea disabled class="w-full border-gray-300 rounded p-2 bg-gray-100" rows="3">
+{{ $proposal->tasks ?? '' }}</textarea>
     </div>
 
-    <!-- Motivation -->
-    <div class="col-span-2">
+    <div>
         <label class="block font-semibold mb-1">Persoonlijke motivatie</label>
-        <textarea disabled class="w-full border-gray-300 rounded p-2 bg-gray-100" rows="3">{{ $proposal->motivation ?? '' }}</textarea>
+        <textarea disabled class="w-full border-gray-300 rounded p-2 bg-gray-100" rows="3">
+{{ $proposal->motivation ?? '' }}</textarea>
     </div>
 </div>

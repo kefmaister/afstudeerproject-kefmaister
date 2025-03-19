@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\Proposal;
 use App\Models\Cv;
 use App\Models\Studyfield;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class CoordinatorController extends Controller
@@ -157,6 +158,16 @@ public function showStudentProposal(Student $student)
 
     return view('coordinator.partials.proposal-page', compact('student', 'students', 'prevStudentId', 'nextStudentId'));
 }
+
+public function approvedCompanies()
+{
+    $companies = Company::where('accepted', 1)
+        ->with(['stages.proposals.student.user'])
+        ->get();
+
+    return view('coordinator.approved-companies', compact('companies'));
+}
+
 
     public function updateProposal(Request $request, Proposal $proposal)
     {
