@@ -21,8 +21,13 @@
         <tbody>
             @forelse ($proposals as $proposal)
                 <tr class="border-t">
-                    <td class="py-2">{{ $proposal->student->user->firstname }}
-                        {{ $proposal->student->user->lastname }}</td>
+                    <td class="py-2">
+                        <a href="{{ route('company.student.show', $proposal->student->id) }}"
+                            class="text-blue-600 hover:underline">
+                            {{ $proposal->student->user->firstname }} {{ $proposal->student->user->lastname }}
+                        </a>
+                    </td>
+
                     <td class="py-2">{{ $proposal->stage->title }}</td>
                     <td class="py-2">
                         @if ($proposal->status == 'approved')

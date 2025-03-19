@@ -51,7 +51,7 @@ Route::middleware(['auth', 'role:coordinator'])->prefix('coordinator')->name('co
         Route::put('/stages/{stage}/approve', [CoordinatorInboxController::class, 'approveStage'])->name('approve.stage');
         Route::put('/stages/{stage}/deny', [CoordinatorInboxController::class, 'denyStage'])->name('deny.stage');
     });
-
+    Route::get('/approved-companies', [CoordinatorController::class, 'approvedCompanies'])->name('approved-companies');
     Route::get('/profile', [CoordinatorController::class, 'profile'])->name('profile');
     Route::put('/profile', [CoordinatorController::class, 'updateProfile'])->name('profile.update');
 });
@@ -62,6 +62,7 @@ Route::middleware(['auth', 'role:company'])->prefix('company')->name('company.')
     Route::get('/waiting', [CompanyController::class, 'waiting'])->name('waiting');
     Route::get('/denied', [CompanyController::class, 'denied'])->name('denied');
     Route::get('/students', [CompanyController::class, 'studentList'])->name('student-list');
+    Route::get('/student/{student}', [CompanyController::class, 'showStudent'])->name('student.show');
     Route::get('/stages/create', [CompanyController::class, 'create'])->name('stages.create');
     Route::post('/stages', [CompanyController::class, 'store'])->name('stages.store');
     Route::put('/stages/{stage}/activate', [CompanyController::class, 'activateStage'])->name('stages.activate');

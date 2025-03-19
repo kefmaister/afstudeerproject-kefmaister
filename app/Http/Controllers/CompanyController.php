@@ -8,6 +8,7 @@ use App\Models\Studyfield;
 use App\Models\Coordinator;
 use App\Models\Student;
 use App\Models\Proposal;
+use App\Models\Cv;
 
 class CompanyController extends Controller
 {
@@ -66,6 +67,13 @@ public function studentList(Request $request)
     $proposals = $proposalQuery->paginate(10);
 
     return view('company.student-list', compact('proposals'));
+}
+
+public function showStudent(Student $student)
+{
+    $cv = Cv::where('student_id', $student->id)->first();
+
+    return view('company.student-detail', compact('student', 'cv'));
 }
 
 public function waiting()
