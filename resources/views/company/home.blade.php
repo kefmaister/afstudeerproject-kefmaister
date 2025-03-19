@@ -3,11 +3,9 @@
         <h1 class="text-xl font-bold">Mijn Stageplaatsen</h1>
     </x-slot>
 
-    @if (session('status'))
-        <div class="mb-4 text-green-600">
-            {{ session('status') }}
-        </div>
-    @endif
+    <!-- Flash Message -->
+    <x-status-alert />
+
 
 
     <!-- 2-Column Layout -->
