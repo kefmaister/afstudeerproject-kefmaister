@@ -17,7 +17,7 @@ class StageFactory extends Factory
     {
         return [
             'company_id'    => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
-            'active'        => $this->faker->boolean,
+            'active'        => $this->faker->tinyInteger,
             'title'         => $this->faker->sentence,
             'tasks'         => $this->faker->paragraph,
             'studyfield_id' => Studyfield::inRandomOrder()->first()->id ?? Studyfield::factory()->create()->id,
