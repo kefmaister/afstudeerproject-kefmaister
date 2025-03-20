@@ -44,6 +44,6 @@
     <div>
         <x-primary-button>
             Filteren
-        <x-primary-button>
+        </x-primary-button>
     </div>
 </div>
