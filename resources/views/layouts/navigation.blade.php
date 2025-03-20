@@ -17,7 +17,7 @@
                             {{ __('Stageplaatsen') }}
                         </x-nav-link>
                         <x-nav-link :href="route('student.showUpload')" :active="request()->routeIs('student.showUpload')">
-                            {{ __('Cv upload') }}
+                            {{ __('CV upload') }}
                         </x-nav-link>
                         <x-nav-link :href="route('proposal.show')" :active="request()->routeIs('proposal.show')">
                             {{ __('Voorstel') }}
@@ -25,7 +25,7 @@
                     @elseif (Auth::user()->role === 'coordinator')
                         <x-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home') ||
                             request()->routeIs('coordinator.student.*')" class="text-gray-900">
-                            {{ __('Coordinator Home') }}
+                            {{ __('Homepagina') }}
                         </x-nav-link>
                         <x-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
                             {{ __('Inbox') }}
@@ -35,11 +35,11 @@
                         </x-nav-link>
                     @elseif (Auth::user()->role === 'company')
                         <x-nav-link :href="route('company.home')" :active="request()->routeIs('company.home') || request()->routeIs('company.stages.*')">
-                            {{ __('Company Home') }}
+                            {{ __('Homepagina') }}
                         </x-nav-link>
                         <x-nav-link :href="route('company.student-list')" :active="request()->routeIs('company.student-list') ||
                             request()->routeIs('company.student.*')">
-                            {{ __('Student list') }}
+                            {{ __('Studentenlijst') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -74,7 +74,7 @@
                             @csrf
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Uitloggen') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -102,17 +102,17 @@
         <div class="pt-2 pb-3 space-y-1">
             @if (Auth::user()->role === 'student')
                 <x-responsive-nav-link :href="route('student.home')" :active="request()->routeIs('student.home')">
-                    {{ __('Student Home') }}
+                    {{ __('Stageplaatsen') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.showUpload')" :active="request()->routeIs('student.showUpload')">
-                    {{ __('Cv upload') }}
+                    {{ __('CV upload') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('proposal.show')" :active="request()->routeIs('proposal.show')">
                     {{ __('Voorstel') }}
                 </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'coordinator')
                 <x-responsive-nav-link :href="route('coordinator.home')" :active="request()->routeIs('coordinator.home')">
-                    {{ __('Coordinator Home') }}
+                    {{ __('Homepagina') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('coordinator.inbox.companies')" :active="request()->routeIs('coordinator.inbox.*')">
                     {{ __('Inbox') }}
@@ -122,10 +122,10 @@
                 </x-responsive-nav-link>
             @elseif (Auth::user()->role === 'company')
                 <x-responsive-nav-link :href="route('company.home')" :active="request()->routeIs('company.home')">
-                    {{ __('Company Home') }}
+                    {{ __('Homepagina') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('company.student-list')" :active="request()->routeIs('company.student-list') || request()->routeIs('company.student.*')">
-                    {{ __('Student list') }}
+                    {{ __('Studentenlijst') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -145,7 +145,7 @@
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Uitloggen') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

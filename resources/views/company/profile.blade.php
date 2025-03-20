@@ -1,6 +1,6 @@
 <x-app>
     <x-slot name="header">
-        <h1 class="text-xl font-bold">Bedrijfsprofiel Bewerken</h1>
+        <h1 class="text-xl font-bold">Bedrijfsprofiel bewerken</h1>
     </x-slot>
 
 
@@ -76,7 +76,7 @@
         </div>
 
         <div>
-            <label class="block font-semibold mb-1" for="employee_count">Aantal Werknemers</label>
+            <label class="block font-semibold mb-1" for="employee_count">Aantal werknemers</label>
             <input type="number" name="employee_count" id="employee_count"
                 value="{{ old('employee_count', $company->employee_count) }}"
                 class="w-full border-gray-300 rounded p-2">
@@ -89,7 +89,7 @@
         </div>
 
         <div>
-            <label class="block font-semibold mb-1" for="student_amount">Huidige studenten</label>
+            <label class="block font-semibold mb-1" for="student_amount">Huidig aantal studenten</label>
             <input type="number" name="student_amount" id="student_amount"
                 value="{{ old('student_amount', $company->student_amount) }}"
                 class="w-full border-gray-300 rounded p-2">

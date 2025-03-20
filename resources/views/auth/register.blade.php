@@ -18,13 +18,13 @@
             <div>
                 <x-input-label for="firstname" :value="__('Voornaam')" />
                 <x-text-input id="firstname" name="firstname" type="text" :value="old('firstname')" required
-                    placeholder="Enter your first name" class="w-full mt-1" />
+                    placeholder="Vul je voornaam in" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="lastname" :value="__('Achternaam')" />
                 <x-text-input id="lastname" name="lastname" type="text" :value="old('lastname')" required
-                    placeholder="Enter your last name" class="w-full mt-1" />
+                    placeholder="Vul je achternaam in" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div>
             <x-input-label for="email" :value="__('E-mail')" />
             <x-text-input id="email" name="email" type="email" :value="old('email')" required
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Enter your email" class="w-full mt-1" />
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Vul je e-mailadres in" class="w-full mt-1" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -40,14 +40,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <x-input-label for="password" :value="__('Wachtwoord')" />
-                <x-text-input id="password" name="password" type="password" required placeholder="Enter your password"
+                <x-text-input id="password" name="password" type="password" required placeholder="Vul je wachtwoord in"
                     class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="password_confirmation" :value="__('Bevestig wachtwoord')" />
                 <x-text-input id="password_confirmation" name="password_confirmation" type="password" required
-                    placeholder="Confirm your password" class="w-full mt-1" />
+                    placeholder="Bevestig je wachtwoord" class="w-full mt-1" />
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
         </div>
@@ -84,22 +84,22 @@
             <div class="w-full md:w-1/2 space-y-4">
                 <!-- Company Name -->
                 <div>
-                    <x-input-label for="company_name" :value="__('Bedrijf naam')" />
-                    <x-text-input id="company_name" name="company_name" type="text" placeholder="Your company name"
+                    <x-input-label for="company_name" :value="__('Bedrijfsnaam')" />
+                    <x-text-input id="company_name" name="company_name" type="text" placeholder="Naam van je bedrijf"
                         :value="old('company_name')" class="w-full mt-1" />
                     <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
                 </div>
 
                 <!-- VAT Number -->
                 <div>
-                    <x-input-label for="company_vat" :value="__('BTW nummer')" />
-                    <x-text-input id="company_vat" name="company_vat" type="text" placeholder="Company VAT number"
+                    <x-input-label for="company_vat" :value="__('BTW-nummer')" />
+                    <x-text-input id="company_vat" name="company_vat" type="text" placeholder="BTW-nummer van je bedrijf"
                         :value="old('company_vat')" class="w-full mt-1" />
                     <x-input-error :messages="$errors->get('company_vat')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="employee_count" :value="__('Werknemers aantal')" />
-                    <x-text-input id="employee_count" name="employee_count" type="number" placeholder="Workers amount"
+                    <x-text-input id="employee_count" name="employee_count" type="number" placeholder="Aantal werknemers"
                         :value="old('employee_count')" class="w-full mt-1" min="0" />
                 </div>
             </div>
@@ -123,7 +123,7 @@
         <div>
             <x-input-label for="website" :value="__('Website')" />
             <x-text-input id="website" name="website" type="url" :value="old('website')" required autofocus
-                pattern="https?://.+" placeholder="https://example.com" class="w-full mt-1" />
+                pattern="https?://.+" placeholder="https://voorbeeld.com" class="w-full mt-1" />
             <x-input-error :messages="$errors->get('website')" class="mt-2" />
         </div>
 
@@ -131,12 +131,12 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <x-input-label for="street" :value="__('Straat')" />
-                <x-text-input id="street" name="street" type="text" placeholder="Street name"
+                <x-text-input id="street" name="street" type="text" placeholder="Straatnaam"
                     :value="old('street')" class="w-full mt-1" />
             </div>
             <div>
                 <x-input-label for="nr" :value="__('Nr.')" />
-                <x-text-input id="nr" name="nr" type="text" placeholder="street number"
+                <x-text-input id="nr" name="nr" type="text" placeholder="Huisnummer"
                     :value="old('nr')" class="w-full mt-1" />
             </div>
         </div>
@@ -145,12 +145,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <x-input-label for="town" :value="__('Gemeente')" />
-                <x-text-input id="town" name="town" type="text" placeholder="City" :value="old('town')"
+                <x-text-input id="town" name="town" type="text" placeholder="Gemeente" :value="old('town')"
                     class="w-full mt-1" />
             </div>
             <div>
                 <x-input-label for="zip" :value="__('Postcode')" />
-                <x-text-input id="zip" name="zip" type="text" placeholder="Zip code" :value="old('zip')"
+                <x-text-input id="zip" name="zip" type="text" placeholder="Postcode" :value="old('zip')"
                     class="w-full mt-1" />
             </div>
         </div>
@@ -194,7 +194,7 @@
 
             <div class="flex justify-end items-end">
                 <x-primary-button class="w-full md:w-auto">
-                    {{ __('Register') }}
+                    {{ __('Registreer') }}
                 </x-primary-button>
             </div>
         </div>

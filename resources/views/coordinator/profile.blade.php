@@ -1,6 +1,6 @@
 <x-app>
     <x-slot name="header">
-        <h1 class="text-xl font-bold">Coördinator Profiel</h1>
+        <h1 class="text-xl font-bold">Profiel</h1>
     </x-slot>
 
     <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">

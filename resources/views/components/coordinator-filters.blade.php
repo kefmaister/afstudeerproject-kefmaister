@@ -16,7 +16,7 @@
 
     <!-- Studyfield Filter -->
     <div>
-        <label for="studyfield" class="sr-only">Studyfield</label>
+        <label for="studyfield" class="sr-only">Studierichting</label>
         <select id="studyfield" name="studyfield" class="border border-gray-300 rounded p-2 pr-8 min-w-[200px]">
             <option value="">Alle richtingen</option>
             @foreach ($studyfields as $sf)
@@ -29,21 +29,21 @@
 
     <!-- Proposal Status Filter -->
     <div>
-        <label for="proposal_status" class="sr-only">Voorstel Status</label>
+        <label for="proposal_status" class="sr-only">Voorstelstatus</label>
         <select id="proposal_status" name="proposal_status"
             class="border border-gray-300 rounded p-2 pr-8 min-w-[200px]">
-            <option value="">Alle Voorstelstatussen</option>
-            <option value="draft" @selected($proposalStatus === 'draft')>Draft</option>
-            <option value="pending" @selected($proposalStatus === 'pending')>Pending</option>
-            <option value="approved" @selected($proposalStatus === 'approved')>Approved</option>
-            <option value="denied" @selected($proposalStatus === 'denied')>Denied</option>
+            <option value="">Alle voorstelstatussen</option>
+            <option value="draft" @selected($proposalStatus === 'draft')>Concept</option>
+            <option value="pending" @selected($proposalStatus === 'pending')>In afwachting</option>
+            <option value="approved" @selected($proposalStatus === 'approved')>Goedgekeurd</option>
+            <option value="denied" @selected($proposalStatus === 'denied')>Afgewezen</option>
         </select>
     </div>
 
     <!-- Submit Button -->
     <div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
-            Filter
-        </button>
+        <x-primary-button>
+            Filteren
+        <x-primary-button>
     </div>
 </div>
