@@ -41,7 +41,7 @@ class StudentController extends Controller
 
         if ($land) {
             $query->whereHas('company', function ($q) use ($land) {
-                $q->where('zip', $land);
+                $q->where('country', $land);
             });
         }
 
