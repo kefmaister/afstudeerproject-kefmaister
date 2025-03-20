@@ -5,7 +5,7 @@
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-            <label class="block font-semibold mb-1">Bedrijf Naam</label>
+            <label class="block font-semibold mb-1">Bedrijfsnaam</label>
             <input type="text" value="{{ $proposal->stage->company->company_name ?? '' }}" disabled
                 class="w-full border-gray-300 rounded p-2 bg-gray-100">
         </div>

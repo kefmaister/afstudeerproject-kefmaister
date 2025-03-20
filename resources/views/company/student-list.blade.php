@@ -3,7 +3,7 @@
         <h2 class="text-xl font-semibold leading-tight">Studentenlijst</h2>
     </x-slot>
 
-    <h1 class="text-2xl font-semibold mb-4">Studenten met stages bij jouw bedrijf</h1>
+    <h1 class="text-2xl font-semibold mb-4">Studenten met een stages in jouw bedrijf</h1>
 
     <form method="GET" class="mb-4">
         <input type="text" name="search" value="{{ request('search') }}" placeholder="Zoek op student"

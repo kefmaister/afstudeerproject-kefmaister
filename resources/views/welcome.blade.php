@@ -22,8 +22,8 @@
         <header class="bg-white shadow-sm">
             <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
                 <!-- Left: Logo or site name -->
-                <div class="text-xl font-bold text-[#FF2D20]">
-                    Arteveldehogeschool
+                <div>
+                    <img src="{{ asset('assets/logo.png') }}" alt="Arteveldehogeschool Logo" class="h-10">
                 </div>
 
                 <!-- Right: Auth navigation -->
@@ -44,13 +44,13 @@
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="text-gray-700 hover:text-gray-900">
-                                Log in
+                            <a href="{{ route('login') }}" class="text-gray-700 hover:text-[#CC0077]">
+                                Inloggen
                             </a>
 
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="text-gray-700 hover:text-gray-900">
-                                    Register
+                                <a href="{{ route('register') }}" class="text-gray-700 hover:text-[#CC0077]">
+                                    Registreren
                                 </a>
                             @endif
                         @endauth
@@ -65,7 +65,7 @@
             <div class="mx-auto max-w-7xl px-4 py-8">
                 <!-- Title / Introduction -->
                 <h1 class="text-3xl font-bold text-center mb-8">
-                    Welkom op het stageplatform van arteveldehogeschool
+                    Welkom op het stageplatform van Arteveldehogeschool
                 </h1>
 
                 <!-- Two-column layout -->
@@ -75,18 +75,19 @@
                         <!-- Hoofdwebsite -->
                         <h2 class="text-xl font-semibold mb-2">Hoofdwebsite</h2>
                         <p class="mb-6">
-                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:underline"
+                            <a href="https://www.arteveldehogeschool.be" class="text-blue-600 hover:text-[#CC0077]"
                                 target="_blank">
                                 Arteveldehogeschool
                             </a>
                         </p>
                         <p class="mb-6">
-                            <a href="https://programmeren.gent/" class="text-blue-600 hover:underline" target="_blank">
+                            <a href="https://programmeren.gent/" class="text-blue-600 hover:text-[#CC0077]"
+                                target="_blank">
                                 Programmeren
                             </a>
                         </p>
                         <p class="mb-6">
-                            <a href="https://www.orm.gent/" class="text-blue-600 hover:underline" target="_blank">
+                            <a href="https://www.orm.gent/" class="text-blue-600 hover:text-[#CC0077]" target="_blank">
                                 Organisatie en Management
                             </a>
                         </p>
@@ -95,8 +96,8 @@
                         <h2 class="text-xl font-semibold mb-2">Opleidingen</h2>
                         <p class="mb-6">
                             <a href="https://www.arteveldehogeschool.be/nl/opleidingen"
-                                class="text-blue-600 hover:underline">
-                                Artevelde hogeschool opleidingen
+                                class="text-blue-600 hover:text-[#CC0077]" target="_blank">
+                                Arteveldehogeschool opleidingen
                             </a>
                         </p>
 

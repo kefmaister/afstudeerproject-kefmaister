@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Left Column: Proposal Fields -->
+        <!-- Linker Kolom: Voorstel Velden -->
         <div class="bg-white p-6 rounded shadow">
             <h2 class="text-xl font-semibold mb-4">
                 Student: {{ $student->user->firstname }} {{ $student->user->lastname }}
@@ -11,17 +11,17 @@
                 <strong>Klasgroep:</strong> {{ $student->class }}
             </div>
             <div class="mb-4">
-                <strong>Studyfield:</strong> {{ $student->studyfield->name ?? 'N/A' }}
+                <strong>Studierichting:</strong> {{ $student->studyfield->name ?? 'N/A' }}
             </div>
 
             @if ($student->proposal)
                 @include('coordinator.partials.proposal-fields', ['proposal' => $student->proposal])
             @else
-                <p class="mt-4 text-gray-600">No proposal has been submitted by this student yet.</p>
+                <p class="mt-4 text-gray-600">Er is nog geen voorstel ingediend door deze student.</p>
             @endif
         </div>
 
-        <!-- Right Column: Conclusie & Feedback -->
+        <!-- Rechter Kolom: Conclusie & Feedback -->
         <div class="bg-white p-6 rounded shadow">
             @if ($student->proposal)
                 <form method="POST" action="{{ route('coordinator.proposal.update', $student->proposal->id) }}">
@@ -34,7 +34,7 @@
                                 Goedgekeurd</option>
                             <option value="denied" {{ $student->proposal->status == 'denied' ? 'selected' : '' }}>Afgekeurd
                             </option>
-                            <option value="pending" {{ $student->proposal->status == 'pending' ? 'selected' : '' }}>Pending
+                            <option value="pending" {{ $student->proposal->status == 'pending' ? 'selected' : '' }}>In afwachting
                             </option>
                         </select>
                     </div>
@@ -45,10 +45,10 @@
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Verstuur</button>
                 </form>
             @else
-                <p class="text-gray-600">No proposal has been submitted by this student yet.</p>
+                <p class="text-gray-600">Er is nog geen voorstel ingediend door deze student.</p>
             @endif
 
-            <a href="{{ route('coordinator.home') }}" class="text-blue-600 hover:underline">Back to Home</a>
+            <a href="{{ route('coordinator.home') }}" class="text-blue-600 hover:underline">Terug naar Home</a>
         </div>
     </div>
 @endsection

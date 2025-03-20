@@ -1,6 +1,6 @@
 <x-app>
     <x-slot name="header">
-        <h1 class="text-xl font-bold">Coordinator Home</h1>
+        <h1 class="text-xl font-bold">Homepagina</h1>
     </x-slot>
 
     <!-- Filter Form -->
@@ -23,9 +23,6 @@
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                         Klasgroep
                     </th>
-                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                        Actions
-                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -43,11 +40,6 @@
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap">
                             {{ $student->studyfield->name ?? 'N/A' }}
-                        </td>
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <!-- Example action link to view the student's proposal -->
-                            <a href="#" class="text-blue-600 hover:underline">View</a>
-                            <!-- Add more actions as needed -->
                         </td>
                     </tr>
                 @empty
