@@ -32,7 +32,8 @@
         <div>
             <x-input-label for="email" :value="__('E-mail')" />
             <x-text-input id="email" name="email" type="email" :value="old('email')" required
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Vul je e-mailadres in" class="w-full mt-1" />
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Vul je e-mailadres in"
+                class="w-full mt-1" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -57,25 +58,26 @@
             <!-- Logo Upload -->
             <div class="w-full md:w-1/3">
                 <x-input-label for="logo" :value="__('Logo')" />
-
                 <label for="logo"
                     class="aspect-square border-2 border-gray-400 rounded flex items-center justify-center bg-gray-100 mt-1 cursor-pointer
-                    {{ $errors->has('logo') ? 'border-red-500' : '' }}">
-                    <div id="logo-container">
-                        @if (session('temp_logo'))
-                            <img src="{{ session('temp_logo') }}" alt="Logo Preview" class="h-full w-full object-cover">
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0l-4 4m4-4v12" />
-                            </svg>
-                        @endif
-                    </div>
+                {{ $errors->has('logo') ? 'border-red-500' : '' }}">
+                    @if (session('temp_logo'))
+                        <img id="logo-preview" src="{{ session('temp_logo') }}" alt="Logo Preview"
+                            class="h-full w-full object-cover">
+                    @else
+                        <svg id="logo-preview" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0l-4 4m4-4v12" />
+                        </svg>
+                    @endif
+
+                    <input id="logo" name="logo" type="file" accept="image/*" class="hidden"
+                        onchange="previewLogo(event)" required>
                 </label>
 
-                <input id="logo" name="logo" type="file" accept="image/*" class="hidden"
-                    onchange="previewLogo(event)" required>
+
+
             </div>
 
 
@@ -93,14 +95,14 @@
                 <!-- VAT Number -->
                 <div>
                     <x-input-label for="company_vat" :value="__('BTW-nummer')" />
-                    <x-text-input id="company_vat" name="company_vat" type="text" placeholder="BTW-nummer van je bedrijf"
-                        :value="old('company_vat')" class="w-full mt-1" />
+                    <x-text-input id="company_vat" name="company_vat" type="text"
+                        placeholder="BTW-nummer van je bedrijf" :value="old('company_vat')" class="w-full mt-1" />
                     <x-input-error :messages="$errors->get('company_vat')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="employee_count" :value="__('Werknemers aantal')" />
-                    <x-text-input id="employee_count" name="employee_count" type="number" placeholder="Aantal werknemers"
-                        :value="old('employee_count')" class="w-full mt-1" min="0" />
+                    <x-text-input id="employee_count" name="employee_count" type="number"
+                        placeholder="Aantal werknemers" :value="old('employee_count')" class="w-full mt-1" min="0" />
                 </div>
             </div>
         </div>
