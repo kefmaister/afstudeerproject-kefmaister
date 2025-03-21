@@ -8,70 +8,105 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 
 class ProposalResource extends Resource
 {
     protected static ?string $model = Proposal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationGroup = 'Management';
 
-    public static function form(Forms\Form $form): Forms\Form
+    public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                // Select the stage for the proposal
-                Forms\Components\Select::make('stage_id')
-                    ->relationship('stage', 'id') // assuming Stage has a "name" attribute
-                    ->required(),
+        return $form->schema([
+            Forms\Components\Select::make('student_id')
+                ->label('Student')
+                ->relationship('student.user', 'lastname')
+                ->searchable()
+                ->required(),
 
-                // Tasks as a textarea
-                Forms\Components\Textarea::make('tasks')
-                    ->label('Tasks')
-                    ->required(),
+            Forms\Components\Select::make('stage_id')
+                ->label('Stage')
+                ->relationship('stage', 'title')
+                ->searchable()
+                ->required(),
 
-                // Motivation as a textarea
-                Forms\Components\Textarea::make('motivation')
-                    ->label('Motivation')
-                    ->required(),
+            Forms\Components\Textarea::make('tasks')
+                ->label('Tasks')
+                ->required(),
 
-                // Coordinator select field
-                Forms\Components\Select::make('coordinator_id')
-                    ->relationship('coordinator', 'lastname')
-                    ->required(),
+            Forms\Components\Textarea::make('motivation')
+                ->label('Motivation')
+                ->required(),
 
-                // Feedback as a textarea
-                Forms\Components\Textarea::make('feedback')
-                    ->label('Feedback')
-                    ->required(),
+            Forms\Components\Select::make('coordinator_id')
+                ->label('Coordinator')
+                ->relationship('coordinator.user', 'lastname')
+                ->searchable()
+                ->required(),
 
-                // Status field (e.g., a select with options for approved/denied)
-                Forms\Components\Select::make('status')
-                    ->options([
-                        0 => 'Denied',
-                        1 => 'Approved',
-                    ])
-                    ->required(),
-            ]);
+            Forms\Components\Textarea::make('feedback')
+                ->label('Feedback')
+                ->nullable(),
+
+            Forms\Components\Select::make('status')
+                ->label('Status')
+                ->options([
+                    'draft'    => 'Draft',
+                    'pending'  => 'In afwachting',
+                    'approved' => 'Goedgekeurd',
+                    'denied'   => 'Afgewezen',
+                ])
+                ->required(),
+        ]);
     }
 
-    public static function table(Tables\Table $table): Tables\Table
+    public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('stage.id')->label('Stage_id')->sortable()->searchable(),
-                TextColumn::make('coordinator.lastname')->label('Coordinator')->sortable()->searchable(),
-                TextColumn::make('tasks')->limit(50)->sortable()->searchable(),
-                TextColumn::make('motivation')->limit(50)->sortable()->searchable(),
-                TextColumn::make('status')->label('Status')->sortable(),
-            ]);
+        return $table->columns([
+            TextColumn::make('student.user.lastname')
+                ->label('Student')
+                ->searchable()
+                ->sortable(),
+
+            TextColumn::make('stage.title')
+                ->label('Stage')
+                ->sortable()
+                ->searchable(),
+
+            TextColumn::make('coordinator.user.lastname')
+                ->label('Coordinator')
+                ->sortable()
+                ->searchable(),
+
+            TextColumn::make('tasks')->limit(40)->label('Tasks'),
+            TextColumn::make('motivation')->limit(40)->label('Motivation'),
+
+            TextColumn::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'approved' => 'success',
+                    'denied'   => 'danger',
+                    'pending'  => 'warning',
+                    'draft'    => 'gray',
+                    default    => 'secondary',
+                }),
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            // Add relation managers if needed
-        ];
+        return [];
     }
 
     public static function getPages(): array

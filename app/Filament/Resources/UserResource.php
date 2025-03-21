@@ -24,38 +24,45 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+{
+    return $form
+        ->schema([
+            TextInput::make('firstname')
+                ->label('First Name')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('email')
-                    ->email()
-                    ->unique(User::class, 'email', ignoreRecord: true)
-                    ->required(),
+            TextInput::make('lastname')
+                ->label('Last Name')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : null)
-                    ->required(fn ($context) => $context === 'create')
-                    ->nullable(fn ($context) => $context === 'edit')
-                    ->maxLength(255),
+            TextInput::make('email')
+                ->email()
+                ->unique(User::class, 'email', ignoreRecord: true)
+                ->required(),
 
-                Select::make('role')
-                    ->options([
-                        'student' => 'Student',
-                        'coordinator' => 'Coordinator',
-                        'company' => 'Company',
-                    ])
-                    ->required(),
+            TextInput::make('password')
+                ->password()
+                ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : null)
+                ->required(fn ($context) => $context === 'create')
+                ->nullable(fn ($context) => $context === 'edit')
+                ->maxLength(255),
 
-                DateTimePicker::make('email_verified_at')
-                    ->label('Email Verified At')
-                    ->nullable(),
-            ]);
-    }
+            Select::make('role')
+                ->options([
+                    'student' => 'Student',
+                    'coordinator' => 'Coordinator',
+                    'company' => 'Company',
+                ])
+                ->required(),
+
+            DateTimePicker::make('email_verified_at')
+                ->label('Email Verified At')
+                ->nullable(),
+        ]);
+}
+
 
     public static function table(Table $table): Table
     {

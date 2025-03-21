@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -19,30 +20,29 @@ class CvResource extends Resource
     protected static ?string $model = Cv::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Management';
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                // Optional: if you want to associate the CV with a student,
-                // ensure your database/migration has a student_id column.
-                Select::make('student_id')
-                    ->label('Student')
-                    ->relationship('student', 'lastname') // Assumes Student model has a "name" attribute.
-                    ->searchable()
-                    ->required(),
+        return $form->schema([
+            Select::make('student_id')
+                ->label('Student')
+                ->relationship('student.user', 'lastname')
+                ->searchable()
+                ->required(),
 
-                // File upload field for the CV file.
-                FileUpload::make('file')
-                    ->label('CV File')
-                    ->required(),
+            FileUpload::make('file')
+                ->label('CV Bestand')
+                ->directory('cvs')
+                ->preserveFilenames()
+                ->acceptedFileTypes(['application/pdf'])
+                ->required(),
 
-                // Textarea for feedback.
-                Textarea::make('feedback')
-                    ->label('Feedback')
-                    ->rows(4)
-                    ->required(),
-            ]);
+            Textarea::make('feedback')
+                ->label('Feedback')
+                ->rows(4)
+                ->required(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -50,37 +50,41 @@ class CvResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('file')->label('File'),
+                TextColumn::make('file')
+                    ->label('CV')
+                    ->url(fn ($record) => asset('storage/' . $record->file))
+                    ->openUrlInNewTab()
+                    ->searchable(),
+
                 TextColumn::make('feedback')
                     ->label('Feedback')
-                    ->limit(50),
-                TextColumn::make('student.lastname')
-                    ->label('Student'),
+                    ->limit(50)
+                    ->wrap(),
+
+                TextColumn::make('student.user.fullname')
+                    ->label('Student')
+                    ->sortable()
+                    ->searchable(),
+
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label('Aangemaakt')
                     ->dateTime(),
+
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label('Bijgewerkt')
                     ->dateTime(),
-            ])
-            ->filters([
-                // Add filters here if needed.
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            // Define any relation managers if needed.
-        ];
+        return [];
     }
 
     public static function getPages(): array

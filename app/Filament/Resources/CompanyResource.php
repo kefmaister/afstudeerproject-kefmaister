@@ -25,88 +25,79 @@ class CompanyResource extends Resource
 
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('company_name')
-                    ->label('Company Name')
-                    ->required()
-                    ->maxLength(255),
+{
+    return $form
+        ->schema([
+            TextInput::make('company_name')
+                ->label('Company Name')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('street')
-                    ->label('Street')
-                    ->required()
-                    ->maxLength(255),
+            TextInput::make('street')
+                ->label('Street')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('streetNr')
-                    ->label('Street Number')
-                    ->required()
-                    ->numeric(),
+            TextInput::make('streetNr')
+                ->label('Street Number')
+                ->required()
+                ->numeric(),
 
-                TextInput::make('town')
-                    ->label('Town')
-                    ->required()
-                    ->maxLength(255),
+            TextInput::make('town')
+                ->label('Town')
+                ->required()
+                ->maxLength(255),
 
-                TextInput::make('zip')
-                    ->label('ZIP Code')
-                    ->required()
-                    ->maxLength(255),
+            TextInput::make('zip')
+                ->label('ZIP Code')
+                ->required()
+                ->maxLength(255),
 
-                Select::make('mentor_id')
-                    ->label('Mentor')
-                    ->relationship('mentor', 'lastname')
-                    ->required(),
+            Toggle::make('accepted')
+                ->label('Accepted')
+                ->required(),
 
-                Toggle::make('accepted')
-                    ->label('Accepted')
-                    ->required(),
+            TextInput::make('max_students')
+                ->label('Max Students')
+                ->required()
+                ->numeric(),
+
+            TextInput::make('student_amount')
+                ->label('Student Amount')
+                ->required()
+                ->numeric(),
+
+            TextInput::make('logo')
+                ->label('Logo Path')
+                ->required(),
+        ]);
+}
 
 
-                TextInput::make('max_students')
-                    ->label('Max Students')
-                    ->required()
-                    ->numeric(),
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            TextColumn::make('company_name')->label('Company Name')->sortable()->searchable(),
+            TextColumn::make('street')->label('Street')->sortable()->searchable(),
+            TextColumn::make('streetNr')->label('Street Number')->sortable()->searchable(),
+            TextColumn::make('town')->label('Town')->sortable()->searchable(),
+            TextColumn::make('zip')->label('ZIP Code')->sortable()->searchable(),
+            BooleanColumn::make('accepted')->label('Accepted')->sortable(),
+            TextColumn::make('max_students')->label('Max Students')->sortable(),
+            TextColumn::make('student_amount')->label('Student Amount')->sortable(),
+            TextColumn::make('logo')->label('Logo')->sortable(),
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
+}
 
-                TextInput::make('student_amount')
-                    ->label('Student Amount')
-                    ->required()
-                    ->numeric(),
-
-                Select::make('logo_id')
-                    ->label('Logo')
-                    ->relationship('logo', 'path')
-                    ->required(),
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('company_name')->label('Company Name')->sortable()->searchable(),
-                TextColumn::make('street')->label('Street')->sortable()->searchable(),
-                TextColumn::make('streetNr')->label('Street Number')->sortable()->searchable(),
-                TextColumn::make('town')->label('Town')->sortable()->searchable(),
-                TextColumn::make('zip')->label('ZIP Code')->sortable()->searchable(),
-                TextColumn::make('mentor.lastname')->label('Mentor')->sortable()->searchable(),
-                BooleanColumn::make('accepted')->label('Accepted')->sortable(),
-                TextColumn::make('max_students')->label('Max Students')->sortable(),
-                TextColumn::make('student_amount')->label('Student Amount')->sortable(),
-                TextColumn::make('logo.path')->label('Logo')->sortable(),
-            ])
-            ->filters([
-                // Add filters if needed
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
 
     public static function getRelations(): array
     {
