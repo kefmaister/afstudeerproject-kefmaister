@@ -1,66 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎓 Student Information 
+*by Kevin Dworschak*  
+*Student at Arteveldehogeschool – Graduate Degree in Programming*  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## 🎓 Internship Management Platform
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This web application is designed to simplify and streamline the internship process between **students**, **companies**, and **coordinators**. It provides functionality for proposing, reviewing, and approving internships while managing CVs, company profiles, and stage (internship) offers.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧱 Tech Stack
 
-## Learning Laravel
+- **Laravel** (Backend & API)
+- **Blade** (Server-side rendering)
+- **Tailwind CSS** (Styling)
+- **MariaDB** (Relational Database)
+- **DigitalOcean** (Hosting/Deployment)
+- **Authentication** via Laravel Breeze
+- **Role-based access** for:
+  - Students
+  - Coordinators
+  - Companies
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ✨ Key Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Students can:
+- Browse and filter available internships (stages)
+- Upload and manage their CV
+- Submit proposals linked to internships
+- View proposal statuses and feedback
 
-## Laravel Sponsors
+### Companies can:
+- Register and manage their profiles
+- Add new internships
+- See students who have submitted proposals to their internships
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Coordinators can:
+- Approve or reject companies and internships
+- Review student proposals
+- Give feedback on CVs
+- See an overview of companies and students per studyfield
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🛠️ Problems Solved
 
-## Contributing
+Before the redesign and rebuild of this platform, several issues made the system inefficient for students, companies, and coordinators:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- ❌ **Outdated User Interface**  
+  The previous version had a non-intuitive, outdated design which made navigation and interaction frustrating for users.  
+  ✅ *The design is modern and simplified. The forms are also much simpler.*
 
-## Code of Conduct
+- ❌ **Cumbersome Company Registration**  
+  Registering as a company required too many manual steps, often resulting in drop-offs or incorrect data.  
+  ✅ *Now, company registration is streamlined into a single form, including logo upload and relevant data capture.*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- ❌ **Difficult Communication Flow**  
+  There was no clear way for companies, students, and coordinators to interact effectively within the platform.  
+  ✅ *Coordinators can now view associated students per company, give feedback on CVs and proposals, and track everything from one dashboard.*
 
-## Security Vulnerabilities
+- ❌ **Manual Communication Around Company Approval**  
+  Coordinators had to manually notify companies when their application was accepted or denied.  
+  ✅ *Automated emails are now sent to companies when they are approved or rejected, saving time and ensuring instant feedback.*
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- ❌ **Excessive Form Fields for Students**  
+  Students had to manually fill in too much data, even when selecting a predefined internship.  
+  ✅ *If a student selects an internship, much of the company and mentor information is automatically pre-filled, reducing friction and errors.*
 
-## License
+Overall, this rebuild focused on making the experience faster, more modern, and more intuitive for all parties involved.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🚀 Installation (Local Setup)
+
+```bash
+git clone https://github.com/kefmaister/afstudeerproject-kefmaister.git
+cd project
+composer install
+cp .env.example .env
+php artisan key:generate
+# Configure your .env (DB, mail, etc.)
+php artisan migrate --seed
+npm install && npm run build
+php artisan serve
+```
+
+---
+
+## 🌐 Live Demo
+
+**Deployed Website:**  
+👉 [https://smartdatabase-project-final-kgxow.ondigitalocean.app](https://smartdatabase-project-final-kgxow.ondigitalocean.app/)
+
+---
+
+## 👤 Testing Accounts (Deployed Version)
+
+All passwords: `password`
+
+| Role        | Email                   |
+|-------------|-------------------------|
+| Student     | `student@mail.com`      |
+| Coordinator | `coordinator@mail.com`  |
+| Coordinator | `coord@mail.com`        |
+| Company     | `alice@company.com`     |
+| Company     | `bob@company.com`       |
+| Company     | `charlie@company.com`   |
+
+> ⚠️ These accounts only work with the **deployed database**.
+
+---
+
+## 🧪 Testing Accounts (Local Database)
+
+If you're testing locally, use:
+
+| Role        | Email                 |
+|-------------|-----------------------|
+| Student     | `student@mail.com`    |
+| Coordinator | `coordinator@mail.com`|
+| Company     | `company@mail.com`    |
+
+All passwords: `password`
